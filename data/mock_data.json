@@ -1,0 +1,929 @@
+{
+  "metadata": {
+    "generated_at": "2026-04-09T06:00:00Z",
+    "version": "1.0",
+    "description": "Synthetic OSINT dataset for D-TRACK MVP demonstration",
+    "total_profiles": 25,
+    "anchor_sentences": [
+      "Selling premium product, DM for prices and delivery",
+      "Fresh stock available, fast delivery guaranteed",
+      "Wholesale available, bulk deals for regulars",
+      "Product ready for pickup, payment in crypto only",
+      "Best quality in town, contact for menu and pricing"
+    ]
+  },
+  "profiles": [
+    {
+      "id": "PROF-001",
+      "platform": "telegram",
+      "username": "@SnowKing247",
+      "display_name": "The Plug ❄️🔌",
+      "bio": "DM for menu 📋 | Crypto payments 💳 | ETH: 0x742d35Cc6634C0532925a3b844Bc9e7595f2bD68 | Fastest in NCR 🚀",
+      "followers": 3200,
+      "phone": "+91-98765-43210",
+      "wallet_addresses": [
+        "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD68"
+      ],
+      "posts": [
+        {
+          "id": "POST-001-01",
+          "timestamp": "2026-03-15T22:30:00Z",
+          "text": "❄️ Fresh batch just landed! Premium quality, prices starting 2500/g. DM for full menu. Fast delivery NCR only 🚀🔌",
+          "media_type": "text",
+          "engagement": {
+            "likes": 45,
+            "shares": 12
+          }
+        },
+        {
+          "id": "POST-001-02",
+          "timestamp": "2026-03-18T14:15:00Z",
+          "text": "Wholesale available for regulars 📦 Bulk deals on ❄️ and 🍃. Payment in ETH preferred. Send to 0x742d35Cc6634C0532925a3b844Bc9e7595f2bD68",
+          "media_type": "text",
+          "engagement": {
+            "likes": 67,
+            "shares": 23
+          }
+        },
+        {
+          "id": "POST-001-03",
+          "timestamp": "2026-03-22T01:45:00Z",
+          "text": "Best quality in town, contact for menu and pricing. Only serious buyers. No time wasters 🔌❄️💯",
+          "media_type": "text",
+          "engagement": {
+            "likes": 89,
+            "shares": 31
+          }
+        },
+        {
+          "id": "POST-001-04",
+          "timestamp": "2026-04-01T19:20:00Z",
+          "text": "Re-stocked everything 🍃❄️🍄 Premium selections only. HMU on telegram @SnowKing247 for the full list. Payment crypto only 💳",
+          "media_type": "text",
+          "engagement": {
+            "likes": 102,
+            "shares": 44
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-002",
+      "platform": "instagram",
+      "username": "@luxlife_rahul",
+      "display_name": "Rahul | Living Life 🌟",
+      "bio": "Entrepreneur 🚗💰 | Delhi NCR | DM for collabs | linktr.ee/rahul_luxlife",
+      "followers": 4200,
+      "phone": "+91-98765-43210",
+      "wallet_addresses": [
+        "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD68"
+      ],
+      "posts": [
+        {
+          "id": "POST-002-01",
+          "timestamp": "2026-03-10T10:00:00Z",
+          "text": "New ride, new vibes 🚗💨 Blessed and grateful for this journey. Hard work pays off! #blessed #entrepreneurlife",
+          "media_type": "image",
+          "engagement": {
+            "likes": 312,
+            "shares": 15
+          }
+        },
+        {
+          "id": "POST-002-02",
+          "timestamp": "2026-03-20T16:30:00Z",
+          "text": "Weekend getaway with the crew 🏝️🥂 Life is too short to not enjoy. Link in bio for business inquiries only.",
+          "media_type": "image",
+          "engagement": {
+            "likes": 456,
+            "shares": 22
+          }
+        },
+        {
+          "id": "POST-002-03",
+          "timestamp": "2026-03-28T23:45:00Z",
+          "text": "Late night grind never stops 💰🔥 Building empire one deal at a time. ETH to 0x742d35Cc6634C0532925a3b844Bc9e7595f2bD68 for investments",
+          "media_type": "text",
+          "engagement": {
+            "likes": 178,
+            "shares": 8
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-003",
+      "platform": "twitter",
+      "username": "@rahul_connects",
+      "display_name": "RC 🔌",
+      "bio": "Connecting people with what they need 🤝 | NCR based | DM open | ETH: 0x742d35Cc6634C0532925a3b844Bc9e7595f2bD68",
+      "followers": 1800,
+      "phone": null,
+      "wallet_addresses": [
+        "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD68"
+      ],
+      "posts": [
+        {
+          "id": "POST-003-01",
+          "timestamp": "2026-03-12T20:00:00Z",
+          "text": "Got the freshest supply in NCR 🔌 DM if you know what I mean. Menu updated. Delivery same day for south delhi 🚀",
+          "media_type": "text",
+          "engagement": {
+            "likes": 34,
+            "shares": 18
+          }
+        },
+        {
+          "id": "POST-003-02",
+          "timestamp": "2026-03-25T11:30:00Z",
+          "text": "Product ready for pickup, payment in crypto only 💳 No middle men, direct from source. ETH preferred 🔒",
+          "media_type": "text",
+          "engagement": {
+            "likes": 56,
+            "shares": 29
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-004",
+      "platform": "telegram",
+      "username": "@DeliveryBot_NCR",
+      "display_name": "NCR Express Delivery 📦",
+      "bio": "Automated order system | Menu: /start | ETH payments: 0x742d35Cc6634C0532925a3b844Bc9e7595f2bD68 | 24/7 active",
+      "followers": 890,
+      "phone": null,
+      "wallet_addresses": [
+        "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD68"
+      ],
+      "posts": [
+        {
+          "id": "POST-004-01",
+          "timestamp": "2026-03-14T00:00:00Z",
+          "text": "📋 MENU UPDATE 📋\n❄️ Premium: 3000/g\n🍃 Imported: 800/g\n🍄 Special: 1500/unit\n💊 Party Pack: 500/pc\nMin order 5000. ETH only.",
+          "media_type": "text",
+          "engagement": {
+            "likes": 0,
+            "shares": 0
+          }
+        },
+        {
+          "id": "POST-004-02",
+          "timestamp": "2026-03-21T00:00:00Z",
+          "text": "Selling premium product, DM for prices and delivery. All orders confirmed within 30 mins. NCR coverage only. 🔌🚀",
+          "media_type": "text",
+          "engagement": {
+            "likes": 0,
+            "shares": 0
+          }
+        },
+        {
+          "id": "POST-004-03",
+          "timestamp": "2026-04-02T00:00:00Z",
+          "text": "Fresh stock available, fast delivery guaranteed 📦 New batch of ❄️ and 🍃 just arrived. Quality tested ✅ Send ETH to wallet in bio.",
+          "media_type": "text",
+          "engagement": {
+            "likes": 0,
+            "shares": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-005",
+      "platform": "instagram",
+      "username": "@promo_king_delhi",
+      "display_name": "Delhi Promos 📢",
+      "bio": "Follow @luxlife_rahul for lifestyle | DM for exclusive deals | Based in South Delhi",
+      "followers": 2100,
+      "phone": "+91-87654-32109",
+      "wallet_addresses": [
+        "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD68"
+      ],
+      "posts": [
+        {
+          "id": "POST-005-01",
+          "timestamp": "2026-03-16T18:00:00Z",
+          "text": "🔥 My guy @luxlife_rahul always comes through! Best quality you'll find in Delhi. If you know, you know 🔌❄️",
+          "media_type": "text",
+          "engagement": {
+            "likes": 123,
+            "shares": 45
+          }
+        },
+        {
+          "id": "POST-005-02",
+          "timestamp": "2026-03-30T21:00:00Z",
+          "text": "Weekend sorted thanks to the plug 🍃🔌 DM @luxlife_rahul for the connect. You won't be disappointed fam 💯",
+          "media_type": "text",
+          "engagement": {
+            "likes": 89,
+            "shares": 33
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-006",
+      "platform": "telegram",
+      "username": "@GreenLeaf420",
+      "display_name": "Leaf Master 🍃",
+      "bio": "Organic only 🌱 | SOL: 7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU | DM for strains",
+      "followers": 1450,
+      "phone": "+91-76543-21098",
+      "wallet_addresses": [
+        "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU"
+      ],
+      "posts": [
+        {
+          "id": "POST-006-01",
+          "timestamp": "2026-03-11T15:00:00Z",
+          "text": "🍃 New strain dropped: Purple Haze OG. 1200/g, minimum 5g order. SOL payments get priority. DM for samples 🌱",
+          "media_type": "text",
+          "engagement": {
+            "likes": 78,
+            "shares": 19
+          }
+        },
+        {
+          "id": "POST-006-02",
+          "timestamp": "2026-03-24T20:30:00Z",
+          "text": "Bulk deals for my regulars 📦🍃 10g+ gets free delivery in Bangalore. Quality over everything. Solana preferred 💜",
+          "media_type": "text",
+          "engagement": {
+            "likes": 56,
+            "shares": 14
+          }
+        },
+        {
+          "id": "POST-006-03",
+          "timestamp": "2026-04-03T17:00:00Z",
+          "text": "Fresh stock available, fast delivery guaranteed. Indoor grown, lab tested. Bangalore/Mysore only 🍃🔌",
+          "media_type": "text",
+          "engagement": {
+            "likes": 92,
+            "shares": 27
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-007",
+      "platform": "instagram",
+      "username": "@nature_vibes_blr",
+      "display_name": "Nature & Vibes 🌿",
+      "bio": "Organic lifestyle 🌱 | Bangalore | Plant enthusiast | SOL: 7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+      "followers": 3100,
+      "phone": "+91-76543-21098",
+      "wallet_addresses": [
+        "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU"
+      ],
+      "posts": [
+        {
+          "id": "POST-007-01",
+          "timestamp": "2026-03-09T09:00:00Z",
+          "text": "Morning garden check 🌱🌿 Growing season is here! Nature provides everything we need. #organic #plantlife",
+          "media_type": "image",
+          "engagement": {
+            "likes": 234,
+            "shares": 11
+          }
+        },
+        {
+          "id": "POST-007-02",
+          "timestamp": "2026-03-19T12:00:00Z",
+          "text": "The harvest is looking beautiful 🍃✨ Mother nature does not disappoint. DM for organic products link in bio 🌱",
+          "media_type": "image",
+          "engagement": {
+            "likes": 189,
+            "shares": 7
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-008",
+      "platform": "telegram",
+      "username": "@MumbaiMolly",
+      "display_name": "Party Central Mumbai 💊🎉",
+      "bio": "Mumbai nightlife connect | ETH: 0x8Ba1f109551bD432803012645Ac136ddd64DBA72 | Weekend specials",
+      "followers": 670,
+      "phone": "+91-65432-10987",
+      "wallet_addresses": [
+        "0x8Ba1f109551bD432803012645Ac136ddd64DBA72"
+      ],
+      "posts": [
+        {
+          "id": "POST-008-01",
+          "timestamp": "2026-03-13T22:00:00Z",
+          "text": "💊 Party supplies ready for the weekend! Molly's, stamps, and more. Bandra/Juhu delivery. ETH or cash 🎉🔌",
+          "media_type": "text",
+          "engagement": {
+            "likes": 34,
+            "shares": 12
+          }
+        },
+        {
+          "id": "POST-008-02",
+          "timestamp": "2026-03-27T23:30:00Z",
+          "text": "Fresh batch of beans 💊 and tabs 🌈 just dropped. Tested and verified. Saturday night sorted. DM for prices 🎉",
+          "media_type": "text",
+          "engagement": {
+            "likes": 45,
+            "shares": 18
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-009",
+      "platform": "twitter",
+      "username": "@ChemWiz_Mum",
+      "display_name": "ChemWiz 🧪",
+      "bio": "Chemistry enthusiast | Mumbai | Research papers | Not what you think lol",
+      "followers": 950,
+      "phone": "+91-65432-10987",
+      "wallet_addresses": [
+        "0x8Ba1f109551bD432803012645Ac136ddd64DBA72"
+      ],
+      "posts": [
+        {
+          "id": "POST-009-01",
+          "timestamp": "2026-03-17T14:00:00Z",
+          "text": "New synthesis route discovered 🧪 Amazing compounds with incredible properties. DM if interested in trying samples 💊",
+          "media_type": "text",
+          "engagement": {
+            "likes": 23,
+            "shares": 9
+          }
+        },
+        {
+          "id": "POST-009-02",
+          "timestamp": "2026-04-01T16:00:00Z",
+          "text": "Wholesale available, bulk deals for regulars. Lab tested for purity. Only ETH payments accepted. Quality guaranteed 🧪💊",
+          "media_type": "text",
+          "engagement": {
+            "likes": 31,
+            "shares": 15
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-010",
+      "platform": "telegram",
+      "username": "@ShadowDrop_HYD",
+      "display_name": "Shadow Drops 🌙",
+      "bio": "Hyderabad's finest | Discreet delivery | BTC: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa | 🍄🍃",
+      "followers": 520,
+      "phone": null,
+      "wallet_addresses": [
+        "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"
+      ],
+      "posts": [
+        {
+          "id": "POST-010-01",
+          "timestamp": "2026-03-20T21:00:00Z",
+          "text": "🍄 Magic available in Hyderabad. Microdose or full trip packs. BTC only, no exceptions. DM for drops 🌙",
+          "media_type": "text",
+          "engagement": {
+            "likes": 22,
+            "shares": 8
+          }
+        },
+        {
+          "id": "POST-010-02",
+          "timestamp": "2026-04-02T19:00:00Z",
+          "text": "Product ready for pickup, payment in crypto only. Hyd metro area coverage. Discreet packaging guaranteed 🌙🍄",
+          "media_type": "text",
+          "engagement": {
+            "likes": 18,
+            "shares": 6
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-011",
+      "platform": "instagram",
+      "username": "@fitness_amit",
+      "display_name": "Amit | Fitness Coach 💪",
+      "bio": "Certified PT | Delhi | Transformations | DM for programs | No shortcuts 🏋️",
+      "followers": 8500,
+      "phone": "+91-99887-76655",
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "POST-011-01",
+          "timestamp": "2026-03-08T06:00:00Z",
+          "text": "Morning workout done 💪🔥 Consistency is the key to transformation. No supplements, just hard work! #fitness #gym",
+          "media_type": "image",
+          "engagement": {
+            "likes": 567,
+            "shares": 23
+          }
+        },
+        {
+          "id": "POST-011-02",
+          "timestamp": "2026-03-15T18:30:00Z",
+          "text": "Client transformation: 3 months of dedicated training and clean eating. So proud of this progress! 🏆💪 #beforeafter",
+          "media_type": "image",
+          "engagement": {
+            "likes": 890,
+            "shares": 45
+          }
+        },
+        {
+          "id": "POST-011-03",
+          "timestamp": "2026-03-29T07:00:00Z",
+          "text": "New batch of protein powder arrived. Whey isolate, 2kg tubs. DM for pricing if interested. Only genuine stuff 💪",
+          "media_type": "text",
+          "engagement": {
+            "likes": 234,
+            "shares": 12
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-012",
+      "platform": "twitter",
+      "username": "@foodie_priya",
+      "display_name": "Priya | Food Explorer 🍕",
+      "bio": "Mumbai foodie | Restaurant reviews | DM for collabs | Zomato Gold member",
+      "followers": 12300,
+      "phone": null,
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "POST-012-01",
+          "timestamp": "2026-03-10T13:00:00Z",
+          "text": "The mushroom risotto at this new place in Bandra is absolutely divine 🍄✨ Must try if you're in Mumbai! 5/5 rating #foodie",
+          "media_type": "image",
+          "engagement": {
+            "likes": 456,
+            "shares": 34
+          }
+        },
+        {
+          "id": "POST-012-02",
+          "timestamp": "2026-03-22T19:30:00Z",
+          "text": "Best brownie I've ever had 🍫 The chocolate is so pure and rich. This bakery is a hidden gem! #dessert #mumbai",
+          "media_type": "image",
+          "engagement": {
+            "likes": 678,
+            "shares": 56
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-013",
+      "platform": "instagram",
+      "username": "@travel_deepak",
+      "display_name": "Deepak | Wanderlust ✈️",
+      "bio": "Solo traveler | 30 countries | Photography | Budget tips | Delhi based",
+      "followers": 15600,
+      "phone": null,
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "POST-013-01",
+          "timestamp": "2026-03-05T08:00:00Z",
+          "text": "Snow capped peaks of Himachal 🏔️❄️ Nothing beats the fresh mountain air. 3 day trek completed! #travel #himachal",
+          "media_type": "image",
+          "engagement": {
+            "likes": 1234,
+            "shares": 89
+          }
+        },
+        {
+          "id": "POST-013-02",
+          "timestamp": "2026-03-18T17:00:00Z",
+          "text": "The green valleys of Munnar are a dream 🍃🌿 Tea plantations as far as the eye can see. Pure bliss! #kerala",
+          "media_type": "image",
+          "engagement": {
+            "likes": 987,
+            "shares": 67
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-014",
+      "platform": "telegram",
+      "username": "@crypto_trader_IN",
+      "display_name": "CryptoTrader India 📊",
+      "bio": "Market analysis | ETH: 0xdAC17F958D2ee523a2206206994597C13D831ec7 | Not financial advice",
+      "followers": 4500,
+      "phone": null,
+      "wallet_addresses": [
+        "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+      ],
+      "posts": [
+        {
+          "id": "POST-014-01",
+          "timestamp": "2026-03-12T09:00:00Z",
+          "text": "ETH looking bullish at this support level 📊 My analysis says we break 4k this week. DYOR as always. Not financial advice.",
+          "media_type": "text",
+          "engagement": {
+            "likes": 123,
+            "shares": 45
+          }
+        },
+        {
+          "id": "POST-014-02",
+          "timestamp": "2026-03-26T11:00:00Z",
+          "text": "Portfolio update: 60% ETH, 25% BTC, 15% SOL. Holding strong through the correction. Long term vision 💎🙌",
+          "media_type": "text",
+          "engagement": {
+            "likes": 89,
+            "shares": 23
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-015",
+      "platform": "twitter",
+      "username": "@techdev_sahil",
+      "display_name": "Sahil | Full Stack Dev 💻",
+      "bio": "React + Node.js | Open source | Bangalore | Building cool stuff",
+      "followers": 6700,
+      "phone": null,
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "POST-015-01",
+          "timestamp": "2026-03-07T10:00:00Z",
+          "text": "Just deployed my new app to production 🚀 Clean architecture with pure functional components. Check it out! #webdev",
+          "media_type": "text",
+          "engagement": {
+            "likes": 234,
+            "shares": 56
+          }
+        },
+        {
+          "id": "POST-015-02",
+          "timestamp": "2026-03-21T15:00:00Z",
+          "text": "Speed optimization tip: lazy loading reduced our bundle size by 40%. The app loads like lightning now ⚡ #performance",
+          "media_type": "text",
+          "engagement": {
+            "likes": 345,
+            "shares": 78
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-016",
+      "platform": "instagram",
+      "username": "@chef_meera",
+      "display_name": "Chef Meera 👩‍🍳",
+      "bio": "Home chef | Healthy recipes | Organic ingredients | Mumbai | Orders open",
+      "followers": 9200,
+      "phone": "+91-88776-65544",
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "POST-016-01",
+          "timestamp": "2026-03-06T11:00:00Z",
+          "text": "Today's special: herb crusted chicken with fresh green salad 🥗🌿 All organic ingredients. Order before 2pm for delivery!",
+          "media_type": "image",
+          "engagement": {
+            "likes": 567,
+            "shares": 34
+          }
+        },
+        {
+          "id": "POST-016-02",
+          "timestamp": "2026-03-23T12:00:00Z",
+          "text": "Experimenting with mushroom and truffle pasta 🍄🍝 The aroma is incredible! Ice cream dessert to follow 🍦 #homecooking",
+          "media_type": "image",
+          "engagement": {
+            "likes": 432,
+            "shares": 21
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-017",
+      "platform": "telegram",
+      "username": "@DarkNet_Vendor99",
+      "display_name": "V99 🔒",
+      "bio": "Premium only | ETH: 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984 | Wickr: v99secure | No meetups",
+      "followers": 340,
+      "phone": null,
+      "wallet_addresses": [
+        "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984"
+      ],
+      "posts": [
+        {
+          "id": "POST-017-01",
+          "timestamp": "2026-03-16T03:00:00Z",
+          "text": "❄️ Grade A. Uncut. 4000/g. Minimum 10g. ETH to 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984. Dead drops only. 🔒",
+          "media_type": "text",
+          "engagement": {
+            "likes": 12,
+            "shares": 3
+          }
+        },
+        {
+          "id": "POST-017-02",
+          "timestamp": "2026-03-29T02:00:00Z",
+          "text": "💊 New stock: Xanax bars (pressed), Percs, and party favors. Selling premium product, DM for prices and delivery. Crypto only.",
+          "media_type": "text",
+          "engagement": {
+            "likes": 8,
+            "shares": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-018",
+      "platform": "twitter",
+      "username": "@music_raj",
+      "display_name": "Raj | Music Producer 🎵",
+      "bio": "Beats & melodies | Spotify artist | Chennai | Collabs welcome",
+      "followers": 5400,
+      "phone": null,
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "POST-018-01",
+          "timestamp": "2026-03-09T14:00:00Z",
+          "text": "New track dropping tonight 🎵🔥 The bass hits hard and the melody is pure fire. Stream link in bio! #music #producer",
+          "media_type": "text",
+          "engagement": {
+            "likes": 345,
+            "shares": 67
+          }
+        },
+        {
+          "id": "POST-018-02",
+          "timestamp": "2026-03-25T20:00:00Z",
+          "text": "Studio session was dope today 🎧 Experimenting with crystal clear vocal processing. The mix sounds clean af! #studio",
+          "media_type": "image",
+          "engagement": {
+            "likes": 234,
+            "shares": 45
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-019",
+      "platform": "telegram",
+      "username": "@PartyPlugPune",
+      "display_name": "Pune Party Plug 🎉",
+      "bio": "Pune nightlife essentials | ETH: 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984 | Weekend vibes only",
+      "followers": 280,
+      "phone": "+91-54321-09876",
+      "wallet_addresses": [
+        "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984"
+      ],
+      "posts": [
+        {
+          "id": "POST-019-01",
+          "timestamp": "2026-03-15T20:00:00Z",
+          "text": "🎉 Weekend sorted! 💊 Beans and tabs available. Koregaon Park area delivery. ETH payments at wallet in bio. Party safe! 🔌",
+          "media_type": "text",
+          "engagement": {
+            "likes": 19,
+            "shares": 7
+          }
+        },
+        {
+          "id": "POST-019-02",
+          "timestamp": "2026-04-01T22:00:00Z",
+          "text": "Fresh stock available, fast delivery guaranteed. 🍃💊 Pune/PCMC coverage. Same wallet as V99 for payments. Trust the process 🔒",
+          "media_type": "text",
+          "engagement": {
+            "likes": 15,
+            "shares": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-020",
+      "platform": "instagram",
+      "username": "@gardening_nisha",
+      "display_name": "Nisha | Plant Mom 🌱",
+      "bio": "Indoor gardening | Succulents | Bangalore | Plant sale inquiries in DM",
+      "followers": 7800,
+      "phone": null,
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "POST-020-01",
+          "timestamp": "2026-03-08T09:30:00Z",
+          "text": "My herb garden is thriving 🌿🍃 Fresh basil, mint, and rosemary. Nothing beats homegrown herbs for cooking! #gardening",
+          "media_type": "image",
+          "engagement": {
+            "likes": 456,
+            "shares": 23
+          }
+        },
+        {
+          "id": "POST-020-02",
+          "timestamp": "2026-03-20T11:00:00Z",
+          "text": "New batch of succulents ready for adoption 🌱💚 Prices start at 200. DM for orders. Bangalore delivery available!",
+          "media_type": "image",
+          "engagement": {
+            "likes": 567,
+            "shares": 34
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-021",
+      "platform": "telegram",
+      "username": "@Runner_SouthDelhi",
+      "display_name": "SD Runner 🏃",
+      "bio": "Delivery partner for @SnowKing247 | South Delhi coverage | ETH: 0x742d35Cc6634C0532925a3b844Bc9e7595f2bD68",
+      "followers": 150,
+      "phone": "+91-11223-34455",
+      "wallet_addresses": [
+        "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD68"
+      ],
+      "posts": [
+        {
+          "id": "POST-021-01",
+          "timestamp": "2026-03-17T23:00:00Z",
+          "text": "Active now for South Delhi drops. ❄️🍃 30 min delivery guaranteed. All payments to main wallet. DM with area pin 📍",
+          "media_type": "text",
+          "engagement": {
+            "likes": 8,
+            "shares": 2
+          }
+        },
+        {
+          "id": "POST-021-02",
+          "timestamp": "2026-04-03T21:00:00Z",
+          "text": "Running all night tonight 🏃‍♂️ GK, Saket, Hauz Khas coverage. Same menu as @SnowKing247. Quick turnaround ⚡",
+          "media_type": "text",
+          "engagement": {
+            "likes": 5,
+            "shares": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-022",
+      "platform": "twitter",
+      "username": "@yoga_anita",
+      "display_name": "Anita | Yoga Teacher 🧘",
+      "bio": "RYT 500 | Hatha & Vinyasa | Delhi | Morning batch open | Peace within 🕉️",
+      "followers": 4300,
+      "phone": null,
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "POST-022-01",
+          "timestamp": "2026-03-07T05:30:00Z",
+          "text": "Sunrise yoga by the Yamuna 🧘‍♀️🌅 Finding peace in every breath. Join our morning batch, slots available! #yoga #wellness",
+          "media_type": "image",
+          "engagement": {
+            "likes": 345,
+            "shares": 23
+          }
+        },
+        {
+          "id": "POST-022-02",
+          "timestamp": "2026-03-19T18:00:00Z",
+          "text": "New workshop on crystal healing and meditation 💎🧘 Saturday 10am at the studio. Pure energy and positive vibes! Register via DM 🕉️",
+          "media_type": "text",
+          "engagement": {
+            "likes": 234,
+            "shares": 12
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-023",
+      "platform": "telegram",
+      "username": "@SilkRoad_Chennai",
+      "display_name": "SR Chennai 🌊",
+      "bio": "South India coverage | BTC: 3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5 | Quality assured | Est. 2024",
+      "followers": 410,
+      "phone": null,
+      "wallet_addresses": [
+        "3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5"
+      ],
+      "posts": [
+        {
+          "id": "POST-023-01",
+          "timestamp": "2026-03-14T17:00:00Z",
+          "text": "🍃 Premium imported strains. Chennai, Pondicherry, Coimbatore delivery. BTC only. Menu on request. Discreet packaging 📦",
+          "media_type": "text",
+          "engagement": {
+            "likes": 25,
+            "shares": 9
+          }
+        },
+        {
+          "id": "POST-023-02",
+          "timestamp": "2026-03-28T20:00:00Z",
+          "text": "Best quality in town, contact for menu and pricing. 🍃🍄 South India's trusted source since 2024. BTC to wallet in bio 💰",
+          "media_type": "text",
+          "engagement": {
+            "likes": 31,
+            "shares": 11
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-024",
+      "platform": "instagram",
+      "username": "@street_photographer_kv",
+      "display_name": "KV | Street Photography 📸",
+      "bio": "Capturing life on the streets | Kolkata | Canon R5 | Print orders DM",
+      "followers": 11200,
+      "phone": null,
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "POST-024-01",
+          "timestamp": "2026-03-11T16:00:00Z",
+          "text": "The hustlers on Park Street never sleep 📸 Raw energy of Kolkata captured at 2am. Shot on Canon R5. #streetphotography",
+          "media_type": "image",
+          "engagement": {
+            "likes": 890,
+            "shares": 67
+          }
+        },
+        {
+          "id": "POST-024-02",
+          "timestamp": "2026-03-24T14:00:00Z",
+          "text": "Found this incredible alley with white walls and green doors 🚪🌿 The contrast is pure art. Kolkata has endless stories 📸",
+          "media_type": "image",
+          "engagement": {
+            "likes": 678,
+            "shares": 45
+          }
+        }
+      ]
+    },
+    {
+      "id": "PROF-025",
+      "platform": "twitter",
+      "username": "@startup_vikram",
+      "display_name": "Vikram | Founder 🚀",
+      "bio": "Building @NextGenAI | YC W24 | Bangalore | Hiring engineers",
+      "followers": 18900,
+      "phone": null,
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "POST-025-01",
+          "timestamp": "2026-03-06T08:00:00Z",
+          "text": "Just closed our Series A! 🎉🚀 $12M to build the future of AI. Ice cold focus from here on out. Hiring across all roles 💼",
+          "media_type": "text",
+          "engagement": {
+            "likes": 2345,
+            "shares": 456
+          }
+        },
+        {
+          "id": "POST-025-02",
+          "timestamp": "2026-03-20T10:00:00Z",
+          "text": "Speed of execution is everything in a startup ⚡ We shipped 3 features this week. The team is on fire 🔥 #startuplife",
+          "media_type": "text",
+          "engagement": {
+            "likes": 1234,
+            "shares": 234
+          }
+        }
+      ]
+    },
+    {
+      "id": "CUSTOM-1CBBF0",
+      "platform": "telegram",
+      "username": "@vineetsinghbisht",
+      "display_name": "vineet singh haldwani don",
+      "bio": "i love to talk to women and play badminton in my free time #publicSpeakinh #entreprenuer ",
+      "followers": 420,
+      "phone": null,
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "CUSTOM-1CBBF0-P01",
+          "timestamp": "2026-04-09T07:13:19.939773Z",
+          "text": "maal lelo",
+          "media_type": "text",
+          "engagement": {
+            "likes": 0,
+            "shares": 0
+          }
+        }
+      ]
+    }
+  ]
+}
