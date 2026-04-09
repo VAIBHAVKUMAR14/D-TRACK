@@ -924,6 +924,52 @@
           }
         }
       ]
+    },
+    {
+      "id": "CUSTOM-E53639",
+      "platform": "telegram",
+      "username": "@vineetsinghbisht",
+      "display_name": "vineet singh haldwani don",
+      "bio": "i love to talk to women and play badminton in my free time #publicSpeakinh #entreprenuer ",
+      "followers": 420,
+      "phone": null,
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "CUSTOM-E53639-P01",
+          "timestamp": "2026-04-09T08:15:45.633308Z",
+          "text": "maal lelo",
+          "media_type": "text",
+          "engagement": {
+            "likes": 0,
+            "shares": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "CUSTOM-001",
+      "platform": "telegram",
+      "username": "@new_suspect",
+      "display_name": "Suspect Alpha",
+      "bio": "DM for deals ❄️🔌 | ETH payments",
+      "followers": 500,
+      "phone": null,
+      "wallet_addresses": [
+        "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD68"
+      ],
+      "posts": [
+        {
+          "id": "CUSTOM-001-P01",
+          "timestamp": "2026-04-01T20:00:00Z",
+          "text": "❄️ Premium stock available. 3000/g. DM for menu. Fast delivery NCR 🔌",
+          "media_type": "text",
+          "engagement": {
+            "likes": 0,
+            "shares": 0
+          }
+        }
+      ]
     }
   ]
 }
