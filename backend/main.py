@@ -25,7 +25,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 # Add parent dir to path for imports
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from backend.cleaner import clean_text, MAX_BIO_LENGTH, MAX_TEXT_LENGTH
+from backend.cleaner import clean_text, clean_profile, MAX_BIO_LENGTH, MAX_TEXT_LENGTH
 from backend.models import (
     AnalyzeTextRequest, AnalyzeTextResponse, DashboardStats, Profile
 )
@@ -35,11 +35,12 @@ from backend.identity_resolver import (
 )
 from backend.graph_builder import (
     build_shadow_graph, compute_centrality_metrics,
-    graph_to_serializable, generate_pyvis_html
+    graph_to_serializable, generate_pyvis_html, detect_communities
 )
 from backend.risk_scorer import (
     compute_risk_scores, update_graph_risk_scores, get_risk_leaderboard
 )
+from backend.stylometry import find_probable_burner_matches
 
 
 # ── Configuration ────────────────────────────────────────────────────────────
@@ -78,6 +79,8 @@ _state = {
     "leaderboard": [],
     "stats": {},
     "metadata": {},
+    "burner_leads": [],      # stylometric burner matches
+    "communities": {},       # Louvain community detection
 }
 
 # C5 — asyncio lock to prevent concurrent pipeline runs
@@ -158,12 +161,17 @@ def run_full_pipeline():
     _state["centrality_metrics"] = centrality_metrics
 
     # Step 5: Risk Scoring
-    print(f"\n[5/5] Computing risk scores...")
+    print(f"\n[5/7] Computing risk scores...")
     identities = compute_risk_scores(identities, centrality_metrics)
     _state["identities"] = identities
 
-    # Update graph with risk scores
-    graph_data = graph_to_serializable(graph)
+    # Step 6: Community detection
+    print(f"\n[6/7] Detecting network communities...")
+    communities = detect_communities(graph)
+    _state["communities"] = communities
+
+    # Update graph with risk scores AND community IDs
+    graph_data = graph_to_serializable(graph, communities=communities)
     graph_data = update_graph_risk_scores(graph_data, identities)
     _state["graph_data"] = graph_data
 
@@ -172,6 +180,16 @@ def run_full_pipeline():
 
     # Build leaderboard
     _state["leaderboard"] = get_risk_leaderboard(identities)
+
+    # Step 7: Burner detection (stylometric)
+    print(f"\n[7/7] Running stylometric burner detection...")
+    burner_leads = find_probable_burner_matches(
+        _state["profile_analyses"],
+        _state["identities"],
+        threshold=0.65,
+    )
+    _state["burner_leads"] = burner_leads
+    print(f"       Found {len(burner_leads)} probable burner matches")
 
     # Compute stats
     all_wallets = set()
@@ -182,6 +200,10 @@ def run_full_pipeline():
 
     high_risk = sum(1 for i in identities
                     if i["risk_level"] in ("High", "Critical"))
+
+    community_groups = {}
+    for node_id, cid in communities.items():
+        community_groups.setdefault(str(cid), []).append(node_id)
 
     _state["stats"] = {
         "total_profiles": len(profile_analyses),
@@ -198,6 +220,8 @@ def run_full_pipeline():
             sum(i["risk_score"] for i in identities) / len(identities), 1
         ) if identities else 0.0,
         "high_risk_count": high_risk,
+        "total_communities": len(community_groups),
+        "burner_leads_count": len(burner_leads),
     }
 
     _state["loaded"] = True
@@ -210,6 +234,8 @@ def run_full_pipeline():
     print(f"  Profiles: {_state['stats']['total_profiles']}")
     print(f"  Identities: {_state['stats']['unified_identities']}")
     print(f"  High-Risk Targets: {high_risk}")
+    print(f"  Communities: {len(community_groups)}")
+    print(f"  Burner Leads: {len(burner_leads)}")
     print(f"  Graph: {graph.number_of_nodes()} nodes, {graph.number_of_edges()} edges")
     print(f"{'=' * 60}\n")
 
@@ -371,17 +397,7 @@ async def add_profile(profile: Profile):
     """
     try:
         profile_dict = profile.model_dump()
-
-        # H2 — Clean user-supplied text
-        profile_dict["bio"] = clean_text(
-            profile_dict.get("bio", ""), max_length=MAX_BIO_LENGTH
-        )
-        for post in profile_dict.get("posts", []):
-            post["text"] = clean_text(post.get("text", ""))
-
-        # L4 — Stamp data provenance
-        profile_dict["data_source"] = "custom"
-        profile_dict["added_at"] = datetime.now(timezone.utc).isoformat()
+        profile_dict = clean_profile(profile_dict)  # full cleaning pipeline
 
         # Append to raw profiles
         _state["profiles_raw"].append(profile_dict)
@@ -418,20 +434,12 @@ async def add_profiles_bulk(data: dict):
         if not raw_profiles:
             raise HTTPException(status_code=400, detail="No profiles provided")
 
-        # H1 — Validate each profile with Pydantic
+        # H1 — Validate each profile with Pydantic + full cleaning
         validated = []
         for raw in raw_profiles:
             p = Profile(**raw)
             p_dict = p.model_dump()
-            # H2 — Clean text
-            p_dict["bio"] = clean_text(
-                p_dict.get("bio", ""), max_length=MAX_BIO_LENGTH
-            )
-            for post in p_dict.get("posts", []):
-                post["text"] = clean_text(post.get("text", ""))
-            # L4 — Provenance
-            p_dict["data_source"] = "custom"
-            p_dict["added_at"] = datetime.now(timezone.utc).isoformat()
+            p_dict = clean_profile(p_dict)  # full cleaning pipeline
             validated.append(p_dict)
 
         _state["profiles_raw"].extend(validated)
@@ -484,11 +492,46 @@ async def get_stats():
     return _state["stats"]
 
 
+@app.get("/api/burner-leads", dependencies=[Depends(verify_api_key)])
+async def get_burner_leads():
+    """Return probable burner account matches for analyst review."""
+    await _ensure_loaded()
+    return {
+        "burner_leads": _state["burner_leads"],
+        "count": len(_state["burner_leads"]),
+        "note": "These are analyst leads only. Manual verification required before acting."
+    }
+
+
+@app.get("/api/communities")
+async def get_communities():
+    """Return detected network communities."""
+    await _ensure_loaded()
+    community_groups = {}
+    for node_id, community_id in _state["communities"].items():
+        community_groups.setdefault(str(community_id), []).append(node_id)
+    return {
+        "communities": community_groups,
+        "total_communities": len(community_groups),
+    }
+
+
+@app.get("/api/health")
+async def health():
+    """Lightweight health check — returns instantly even during pipeline run."""
+    return {
+        "status": "ok",
+        "loaded": _state["loaded"],
+        "error": _state.get("error"),
+        "error_count": _state.get("error_count", 0),
+    }
+
+
 @app.get("/")
 async def root():
     return {
         "app": "D-TRACK OSINT",
-        "version": "1.0.0",
+        "version": "2.0.0",
         "status": "running",
         "docs": "/docs",
         "data_loaded": _state["loaded"],

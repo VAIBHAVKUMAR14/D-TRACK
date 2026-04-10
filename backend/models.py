@@ -147,3 +147,29 @@ class AnalyzeTextResponse(BaseModel):
     anchor_similarity: float = 0.0
     emoji_boost: float = 0.0
     price_boost: float = 0.0
+
+
+class BotAssessment(BaseModel):
+    bot_probability: float = 0.0
+    is_likely_bot: bool = False
+    temporal_signals: dict = Field(default_factory=dict)
+    content_signals: dict = Field(default_factory=dict)
+    metadata_signals: dict = Field(default_factory=dict)
+    recommendation: str = "treat_as_human"
+
+
+class BurnerLead(BaseModel):
+    profile_a: str
+    identity_a: Optional[str] = None
+    profile_b: str
+    identity_b: Optional[str] = None
+    stylometric_similarity: float
+    confidence: str
+    link_type: str = "probable_burner"
+    note: str = ""
+
+
+class NetworkRole(BaseModel):
+    network_role: str
+    description: str
+    metrics_used: dict = Field(default_factory=dict)

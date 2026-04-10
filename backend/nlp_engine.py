@@ -12,6 +12,8 @@ import unicodedata
 import numpy as np
 from typing import Optional
 
+from backend.bot_detector import assess_bot_probability
+
 from backend.cleaner import preprocess_for_nlp
 
 # Lazy-loaded model (thread-safe)
@@ -191,6 +193,9 @@ def analyze_profile(profile: dict) -> dict:
     avg_intent = float(np.mean(intent_scores)) if intent_scores else 0.0
     flagged_count = sum(1 for pa in post_analyses if pa["flagged"])
 
+    # Add bot assessment
+    bot_assessment = assess_bot_probability(profile)
+
     return {
         "profile_id": profile["id"],
         "username": profile["username"],
@@ -205,4 +210,6 @@ def analyze_profile(profile: dict) -> dict:
         "wallet_addresses": profile.get("wallet_addresses", []),
         "phone": profile.get("phone"),
         "post_analyses": post_analyses,
+        "bot_assessment": bot_assessment,
+        "is_likely_bot": bot_assessment["is_likely_bot"],
     }

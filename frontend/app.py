@@ -519,12 +519,13 @@ if status:
 
 
 # ── Tabs ─────────────────────────────────────────────────────────────────────
-tab1, tab2, tab3, tab4, tab5 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
     "🕸️ Shadow-Graph",
     "🏆 Risk Leaderboard",
     "🧪 NLP Inspector",
     "🔍 Identity Deep-Dive",
     "📥 Add Custom Data",
+    "🕵️ Burner Leads",
 ])
 
 
@@ -976,11 +977,56 @@ with tab5:
                 st.error(f"Invalid JSON: {e}")
 
 
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# TAB 6: Burner Leads
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+with tab6:
+    st.markdown('<div class="section-title">🕵️ Probable Burner Accounts</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-sub">Accounts with no hard linking signals but high stylometric similarity — analyst leads only, require manual verification</div>', unsafe_allow_html=True)
+
+    burner_data = api_call("/api/burner-leads", auth=True)
+    if not is_error(burner_data):
+        leads = burner_data.get("burner_leads", [])
+        if leads:
+            st.markdown(f"**{len(leads)}** probable burner match(es) detected")
+            for lead in leads:
+                sim = lead['stylometric_similarity']
+                conf_color = "#f87171" if lead['confidence'] == 'high' else "#fbbf24"
+                st.markdown(f"""
+                <div style="background:#111827; border:1px solid rgba(255,255,255,0.06);
+                            border-left: 3px solid {conf_color};
+                            border-radius:12px; padding:1rem 1.4rem; margin-bottom:10px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <b style="color:#e2e8f0;">{html_lib.escape(lead['profile_a'])}</b>
+                            <span style="color:#64748b;"> ↔ </span>
+                            <b style="color:#e2e8f0;">{html_lib.escape(lead['profile_b'])}</b>
+                        </div>
+                        <div style="color:{conf_color}; font-weight:700;">
+                            {sim:.0%} match · {lead['confidence'].upper()}
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:12px; margin-top:6px;">
+                        <span style="color:#94a3b8; font-size:0.8rem;">Identity A: <b>{html_lib.escape(str(lead.get('identity_a', 'N/A')))}</b></span>
+                        <span style="color:#94a3b8; font-size:0.8rem;">Identity B: <b>{html_lib.escape(str(lead.get('identity_b', 'N/A')))}</b></span>
+                    </div>
+                    <div style="color:#64748b; font-size:0.8rem; margin-top:6px;">
+                        {html_lib.escape(lead['note'])}
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+        else:
+            st.success("No probable burner accounts detected.")
+    else:
+        show_error(burner_data)
+
+
 # ── Footer ───────────────────────────────────────────────────────────────────
 st.markdown("---")
 st.markdown("""
 <div style="text-align:center; color:#374151; font-size:0.75rem; padding:1rem 0 2rem; line-height:1.6;">
-    <b style="color:#6366f1;">D-TRACK</b> &nbsp;|&nbsp;
+    <b style="color:#6366f1;">D-TRACK v2.0</b> &nbsp;|&nbsp;
     Cross-Platform OSINT Intelligence &nbsp;|&nbsp;
     Synthetic Data Only &nbsp;|&nbsp;
     Academic / Hackathon Use<br>

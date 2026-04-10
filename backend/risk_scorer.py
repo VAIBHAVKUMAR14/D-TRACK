@@ -117,6 +117,16 @@ def compute_risk_scores(
             0.25 * connection_norm
         )
 
+        # Reduce risk weight for likely-bot accounts
+        # (they are kept in graph but deprioritized in scoring)
+        bot_discount = 0.0
+        for profile in profiles:
+            if profile.get('is_likely_bot', False):
+                bot_discount = 0.30  # reduce final score by 30%
+                break
+
+        risk_score = risk_score * (1 - bot_discount)
+
         # Clamp to [0, 100]
         risk_score = max(0.0, min(100.0, risk_score))
 

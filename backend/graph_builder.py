@@ -146,6 +146,26 @@ def build_shadow_graph(
     return G
 
 
+def detect_communities(G) -> dict:
+    """
+    Run community detection on the shadow graph.
+    Louvain finds groups more densely connected internally
+    than to the rest of the graph — mathematically grounded clusters,
+    not just visual proximity in the force-directed layout.
+    """
+    try:
+        from community import best_partition
+        return best_partition(G, weight='weight')
+    except ImportError:
+        from networkx.algorithms.community import greedy_modularity_communities
+        communities = greedy_modularity_communities(G, weight='weight')
+        return {
+            node: i
+            for i, community in enumerate(communities)
+            for node in community
+        }
+
+
 def compute_centrality_metrics(G: nx.Graph) -> dict[str, dict]:
     """
     Compute various centrality metrics for all nodes.
@@ -186,7 +206,7 @@ def compute_centrality_metrics(G: nx.Graph) -> dict[str, dict]:
     return metrics
 
 
-def graph_to_serializable(G: nx.Graph) -> dict:
+def graph_to_serializable(G: nx.Graph, communities: dict = None) -> dict:
     """
     Convert NetworkX graph to a JSON-serializable dict for the API.
     """
@@ -202,6 +222,7 @@ def graph_to_serializable(G: nx.Graph) -> dict:
             "size": attrs.get("size", 20),
             "color": attrs.get("color", "#4CAF50"),
             "identity_id": attrs.get("identity_id"),
+            "community_id": communities.get(node_id, -1) if communities else -1,
         })
 
     edges = []
