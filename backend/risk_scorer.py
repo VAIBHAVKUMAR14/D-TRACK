@@ -49,12 +49,23 @@ def compute_risk_scores(
         centrality_values = []
         for pid in profile_ids:
             metrics = centrality_metrics.get(pid, {})
-            # Weighted combination of different centrality measures
+            # Detect if eigenvector centrality failed (all zeros)
+            eig_val = metrics.get("eigenvector_centrality", 0)
+            all_eig_zero = all(
+                centrality_metrics.get(p, {}).get("eigenvector_centrality", 0) == 0.0
+                for p in centrality_metrics
+            )
+            # Re-weight if eigenvector failed
+            if all_eig_zero:
+                w_deg, w_bet, w_eig, w_pr = 0.375, 0.375, 0.0, 0.25
+            else:
+                w_deg, w_bet, w_eig, w_pr = 0.3, 0.3, 0.2, 0.2
+
             centrality = (
-                0.3 * metrics.get("degree_centrality", 0) +
-                0.3 * metrics.get("betweenness_centrality", 0) +
-                0.2 * metrics.get("eigenvector_centrality", 0) +
-                0.2 * metrics.get("pagerank", 0)
+                w_deg * metrics.get("degree_centrality", 0) +
+                w_bet * metrics.get("betweenness_centrality", 0) +
+                w_eig * metrics.get("eigenvector_centrality", 0) +
+                w_pr * metrics.get("pagerank", 0)
             )
             centrality_values.append(centrality)
 
@@ -142,8 +153,8 @@ def compute_risk_scores(
     low = sum(1 for i in identities if i["risk_level"] == "Low")
 
     print(f"[RISK] Scores computed: "
-          f"🔴 Critical={critical}, 🟠 High={high}, "
-          f"🟡 Medium={medium}, 🟢 Low={low}")
+          f"Critical={critical}, High={high}, "
+          f"Medium={medium}, Low={low}")
 
     return identities
 
@@ -175,6 +186,28 @@ def update_graph_risk_scores(
             node["risk_score"] = identity["risk_score"]
             node["risk_level"] = identity["risk_level"]
             node["color"] = RISK_COLORS.get(identity["risk_level"], "#4CAF50")
+
+    # ── H6: Wallet nodes inherit risk from linked account nodes ──────────
+    wallet_risk: dict[str, tuple] = {}
+    for node in graph_data.get("nodes", []):
+        if node.get("node_type") == "account":
+            identity = identity_lookup.get(node["id"])
+            if identity:
+                level = identity["risk_level"]
+                score = identity["risk_score"]
+                for wallet in identity.get("all_wallets", []):
+                    existing = wallet_risk.get(wallet)
+                    if not existing or score > existing[0]:
+                        wallet_risk[wallet] = (score, level)
+
+    for node in graph_data.get("nodes", []):
+        if node.get("node_type") == "wallet":
+            wallet_addr = node["id"]
+            if wallet_addr in wallet_risk:
+                score, level = wallet_risk[wallet_addr]
+                node["risk_score"] = score
+                node["risk_level"] = level
+                node["color"] = RISK_COLORS.get(level, "#4CAF50")
 
     return graph_data
 

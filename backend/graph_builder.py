@@ -161,11 +161,13 @@ def compute_centrality_metrics(G: nx.Graph) -> dict[str, dict]:
     # Betweenness centrality
     betweenness_cent = nx.betweenness_centrality(G, weight="weight")
 
-    # Eigenvector centrality (may fail on disconnected graphs)
+    # Eigenvector centrality (use numpy solver for disconnected graph support)
+    _eigenvector_failed = False
     try:
-        eigenvector_cent = nx.eigenvector_centrality(G, max_iter=1000, weight="weight")
-    except nx.PowerIterationFailedConvergence:
+        eigenvector_cent = nx.eigenvector_centrality_numpy(G, weight="weight")
+    except Exception:
         eigenvector_cent = {n: 0.0 for n in G.nodes()}
+        _eigenvector_failed = True
 
     # PageRank
     try:

@@ -15,6 +15,8 @@ import requests
 import json
 import time
 import uuid
+import html as html_lib
+import os
 from datetime import datetime
 from pathlib import Path
 import sys
@@ -30,6 +32,8 @@ st.set_page_config(
 )
 
 API_BASE = "http://localhost:8000"
+API_KEY = os.getenv("DTRACK_API_KEY", "changeme-replace-in-production")
+AUTH_HEADERS = {"Authorization": f"Bearer {API_KEY}"}
 
 # ── Inject Google Fonts + Premium CSS ────────────────────────────────────────
 st.markdown("""
@@ -357,19 +361,49 @@ st.markdown("""
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
 
-def api_call(endpoint, method="GET", data=None):
+def api_call(endpoint, method="GET", data=None, auth=False):
+    """Call backend API with optional auth and differentiated error handling."""
     try:
         url = f"{API_BASE}{endpoint}"
+        headers = AUTH_HEADERS if auth else {}
         if method == "GET":
-            r = requests.get(url, timeout=120)
+            r = requests.get(url, timeout=120, headers=headers)
+        elif method == "DELETE":
+            r = requests.delete(url, timeout=120, headers=headers)
         else:
-            r = requests.post(url, json=data, timeout=120)
+            r = requests.post(url, json=data, timeout=120, headers=headers)
         r.raise_for_status()
+        # Handle HTML responses (graph)
+        content_type = r.headers.get("content-type", "")
+        if "text/html" in content_type:
+            return {"_html": r.text}
         return r.json()
     except requests.exceptions.ConnectionError:
-        return None
-    except Exception:
-        return None
+        return {"_error": "backend_offline", "_msg": "Backend is not running. Start it with: uvicorn backend.main:app --port 8000"}
+    except requests.exceptions.Timeout:
+        return {"_error": "timeout", "_msg": "Request timed out. The pipeline may still be running."}
+    except requests.exceptions.HTTPError as e:
+        return {"_error": "http_error", "_msg": str(e)}
+    except Exception as e:
+        return {"_error": "unknown", "_msg": str(e)}
+
+
+def is_error(result):
+    """Check if an API result is an error."""
+    return result is None or (isinstance(result, dict) and "_error" in result)
+
+
+def show_error(result):
+    """Display a differentiated error message."""
+    if result is None:
+        st.error("No response from backend.")
+    elif result.get("_error") == "backend_offline":
+        st.error(result["_msg"])
+        st.code("uvicorn backend.main:app --reload --port 8000", language="bash")
+    elif result.get("_error") == "timeout":
+        st.warning(result["_msg"])
+    else:
+        st.warning(result.get("_msg", "Unknown error"))
 
 
 def risk_color(score):
@@ -406,16 +440,18 @@ with st.sidebar:
 
     if st.button("⚡ Run Pipeline", use_container_width=True, type="primary"):
         with st.spinner("Executing D-TRACK pipeline..."):
-            result = api_call("/api/ingest", method="POST")
-            if result:
+            result = api_call("/api/ingest", method="POST", auth=True)
+            if not is_error(result):
                 st.success("Pipeline complete!")
                 time.sleep(0.5)
                 st.rerun()
+            else:
+                show_error(result)
 
     st.markdown("")
 
     status = api_call("/api/stats")
-    if status:
+    if not is_error(status):
         st.markdown(f"""
         <div style="
             background: rgba(99,102,241,0.06);
@@ -438,8 +474,7 @@ with st.sidebar:
         </div>
         """, unsafe_allow_html=True)
     else:
-        st.error("Backend offline")
-        st.code("py -m uvicorn backend.main:app --port 8000", language="bash")
+        show_error(status)
 
     st.markdown("---")
     st.markdown("""
@@ -501,7 +536,7 @@ with tab1:
     st.markdown('<div class="section-sub">Interactive network showing linked accounts, crypto wallets, and relationship edges</div>', unsafe_allow_html=True)
 
     graph_data = api_call("/api/graph")
-    if graph_data:
+    if not is_error(graph_data):
         nodes = graph_data.get("nodes", [])
         edges = graph_data.get("edges", [])
         accts = sum(1 for n in nodes if n.get("node_type") == "account")
@@ -518,12 +553,11 @@ with tab1:
         ●&thinsp;Account &nbsp; ◆&thinsp;Wallet
         """)
 
-        try:
-            resp = requests.get(f"{API_BASE}/api/graph/html", timeout=30)
-            if resp.status_code == 200:
-                st.components.v1.html(resp.text, height=700, scrolling=False)
-        except Exception as e:
-            st.warning(f"Graph rendering error: {e}")
+        graph_html = api_call("/api/graph/html", auth=True)
+        if not is_error(graph_html) and graph_html.get("_html"):
+            st.components.v1.html(graph_html["_html"], height=700, scrolling=False)
+        elif is_error(graph_html):
+            st.warning(f"Graph rendering error: {graph_html.get('_msg', 'Unknown')}")
 
         with st.expander("📊 Connection Breakdown"):
             edge_types = {}
@@ -544,8 +578,8 @@ with tab2:
     st.markdown('<div class="section-title">🏆 Risk Score Leaderboard</div>', unsafe_allow_html=True)
     st.markdown('<div class="section-sub">Unified identities ranked by composite risk score (centrality × intent × connections)</div>', unsafe_allow_html=True)
 
-    lb_data = api_call("/api/risk-scores")
-    if lb_data:
+    lb_data = api_call("/api/risk-scores", auth=True)
+    if not is_error(lb_data):
         lb = lb_data.get("leaderboard", [])
 
         # Filters
@@ -597,7 +631,10 @@ with tab2:
             </div>
             """, unsafe_allow_html=True)
     else:
-        st.info("⚡ Click **Run Pipeline** in the sidebar to load data.")
+        if is_error(lb_data):
+            show_error(lb_data)
+        else:
+            st.info("⚡ Click **Run Pipeline** in the sidebar to load data.")
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -700,8 +737,8 @@ with tab4:
     st.markdown('<div class="section-title">🔍 Identity Deep-Dive</div>', unsafe_allow_html=True)
     st.markdown('<div class="section-sub">Select a unified identity to explore all linked profiles, activity, and risk breakdown</div>', unsafe_allow_html=True)
 
-    id_data = api_call("/api/identities")
-    if id_data:
+    id_data = api_call("/api/identities", auth=True)
+    if not is_error(id_data):
         identities = id_data.get("identities", [])
         if identities:
             options = [
@@ -711,7 +748,7 @@ with tab4:
             ]
             sel = st.selectbox("Select Identity:", range(len(options)), format_func=lambda x: options[x])
             sel_id = identities[sel]["identity_id"]
-            full = api_call(f"/api/identity/{sel_id}")
+            full = api_call(f"/api/identity/{sel_id}", auth=True)
 
             if full:
                 score = full.get("risk_score", 0)
@@ -763,9 +800,11 @@ with tab4:
                     with st.expander(f"{profile['username']}  •  {profile['platform'].title()}  •  "
                                      f"Intent: {profile['max_intent_score']:.2f}  •  "
                                      f"Flagged: {profile['flagged_posts']}/{profile['total_posts']}"):
-                        st.markdown(f"**{profile.get('display_name','N/A')}**  |  "
+                        safe_display = html_lib.escape(profile.get('display_name', 'N/A'))
+                        safe_bio = html_lib.escape(profile.get('bio', '—'))
+                        st.markdown(f"**{safe_display}**  |  "
                                     f"Followers: {profile.get('followers',0):,}  |  "
-                                    f"Bio: {profile.get('bio','—')}")
+                                    f"Bio: {safe_bio}")
 
                         for post in profile.get("post_analyses", []):
                             fl = post.get("flagged", False)
@@ -784,13 +823,16 @@ with tab4:
                                         {sc:.0%}
                                     </span>
                                 </div>
-                                <div class="post-text">{post.get('text','')}</div>
+                                <div class="post-text">{html_lib.escape(post.get('text',''))}</div>
                             </div>
                             """, unsafe_allow_html=True)
         else:
             st.info("No identities resolved yet.")
     else:
-        st.info("⚡ Click **Run Pipeline** in the sidebar to load data.")
+        if is_error(id_data):
+            show_error(id_data)
+        else:
+            st.info("⚡ Click **Run Pipeline** in the sidebar to load data.")
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -861,13 +903,15 @@ with tab5:
                 }
 
                 with st.spinner("Adding profile and re-running pipeline..."):
-                    result = api_call("/api/add-profile", method="POST", data=profile)
+                    result = api_call("/api/add-profile", method="POST", data=profile, auth=True)
 
-                if result and result.get("status") == "success":
+                if not is_error(result) and result.get("status") == "success":
                     st.success(f"✅ Profile **{uid}** added! Total profiles: {result.get('total_profiles')}")
                     st.balloons()
                     time.sleep(1)
                     st.rerun()
+                elif is_error(result):
+                    show_error(result)
                 else:
                     st.error("Failed to add profile. Check backend logs.")
 
@@ -914,15 +958,17 @@ with tab5:
 
                 with st.spinner(f"Adding {len(profiles)} profile(s) and re-running pipeline..."):
                     if len(profiles) == 1:
-                        result = api_call("/api/add-profile", method="POST", data=profiles[0])
+                        result = api_call("/api/add-profile", method="POST", data=profiles[0], auth=True)
                     else:
-                        result = api_call("/api/add-profiles-bulk", method="POST", data={"profiles": profiles})
+                        result = api_call("/api/add-profiles-bulk", method="POST", data={"profiles": profiles}, auth=True)
 
-                if result and result.get("status") == "success":
+                if not is_error(result) and result.get("status") == "success":
                     st.success(f"✅ {result.get('message', 'Profiles added!')}")
                     st.balloons()
                     time.sleep(1)
                     st.rerun()
+                elif is_error(result):
+                    show_error(result)
                 else:
                     st.error("Failed to add. Check the JSON format and backend logs.")
 

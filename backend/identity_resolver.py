@@ -6,9 +6,12 @@ identities across Instagram, Telegram, and X (Twitter).
 Secondary signals: shared phone numbers, username pattern matching.
 """
 
+import hashlib
 from collections import defaultdict
 from typing import Optional
 import re
+
+from backend.cleaner import normalize_phone
 
 
 def resolve_identities(profile_analyses: list[dict]) -> list[dict]:
@@ -43,8 +46,7 @@ def resolve_identities(profile_analyses: list[dict]) -> list[dict]:
 
         # Map by phone
         if phone:
-            # Normalize phone (remove spaces, dashes)
-            normalized_phone = re.sub(r"[\s\-\.]", "", phone)
+            normalized_phone = normalize_phone(phone)
             phone_to_profiles[normalized_phone].append(profile)
             has_link = True
 
@@ -147,8 +149,11 @@ def resolve_identities(profile_analyses: list[dict]) -> list[dict]:
         max_intent = max((m["max_intent_score"] for m in members), default=0.0)
         total_flagged = sum(m["flagged_posts"] for m in members)
 
+        sorted_pids = ",".join(sorted(member_ids))
+        stable_hash = hashlib.md5(sorted_pids.encode()).hexdigest()[:8]
+
         identity = {
-            "identity_id": f"ID-{group_id:03d}",
+            "identity_id": f"ID-{stable_hash}",
             "primary_wallet": all_wallets[0] if all_wallets else None,
             "profiles": members,
             "platforms": all_platforms,
@@ -163,7 +168,7 @@ def resolve_identities(profile_analyses: list[dict]) -> list[dict]:
 
         identities.append(identity)
 
-    print(f"[IDENTITY] Resolved {len(profile_analyses)} profiles → "
+    print(f"[IDENTITY] Resolved {len(profile_analyses)} profiles -> "
           f"{len(identities)} unified identities "
           f"({len(identities) - len(unlinked_profiles)} multi-profile merges)")
 
@@ -190,7 +195,7 @@ def get_cross_platform_links(identities: list[dict]) -> list[dict]:
                 shared_wallets = set(p1.get("wallet_addresses", [])) & set(p2.get("wallet_addresses", []))
                 shared_phone = (
                     p1.get("phone") and p2.get("phone") and
-                    re.sub(r"[\s\-\.]", "", p1["phone"]) == re.sub(r"[\s\-\.]", "", p2["phone"])
+                    normalize_phone(p1["phone"]) == normalize_phone(p2["phone"])
                 )
 
                 link_type = "same_identity"

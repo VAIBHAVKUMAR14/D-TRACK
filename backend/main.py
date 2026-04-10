@@ -6,21 +6,28 @@ resolves cross-platform identities via wallet stitching, builds a shadow-graph,
 and computes risk scores.
 """
 
+import asyncio
 import json
 import os
+import secrets
 import sys
+import tempfile
+from contextlib import asynccontextmanager
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Security
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 # Add parent dir to path for imports
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+from backend.cleaner import clean_text, MAX_BIO_LENGTH, MAX_TEXT_LENGTH
 from backend.models import (
-    AnalyzeTextRequest, AnalyzeTextResponse, DashboardStats
+    AnalyzeTextRequest, AnalyzeTextResponse, DashboardStats, Profile
 )
 from backend.nlp_engine import analyze_profile, compute_intent_score
 from backend.identity_resolver import (
@@ -35,41 +42,78 @@ from backend.risk_scorer import (
 )
 
 
-# ── App Setup ────────────────────────────────────────────────────────────────
-app = FastAPI(
-    title="D-TRACK OSINT API",
-    description="Cross-platform OSINT tool for de-anonymizing drug traffickers",
-    version="1.0.0",
-)
+# ── Configuration ────────────────────────────────────────────────────────────
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# C2 — Configurable CORS origins (default: only Streamlit)
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:8501").split(",")
+
+# C3 — API key authentication
+API_KEY = os.getenv("DTRACK_API_KEY", "changeme-replace-in-production")
+security = HTTPBearer()
+
+MAX_FAILURES = 3
+
+
+def verify_api_key(
+    credentials: HTTPAuthorizationCredentials = Security(security),
+):
+    """Verify the bearer token matches the configured API key."""
+    if not secrets.compare_digest(credentials.credentials, API_KEY):
+        raise HTTPException(status_code=403, detail="Invalid API key")
+    return credentials
 
 
 # ── In-Memory State ─────────────────────────────────────────────────────────
 _state = {
     "loaded": False,
+    "error": None,           # C5 — track pipeline errors
+    "error_count": 0,        # C5 — prevent infinite retry
     "profiles_raw": [],
     "profile_analyses": [],
     "identities": [],
     "graph": None,
     "graph_data": None,
+    "graph_html": None,      # M6 — cached PyVis HTML
     "centrality_metrics": {},
     "leaderboard": [],
     "stats": {},
     "metadata": {},
 }
 
+# C5 — asyncio lock to prevent concurrent pipeline runs
+_pipeline_lock = asyncio.Lock()
+
 DATA_PATH = Path(__file__).resolve().parent.parent / "data" / "mock_data.json"
+
+
+# ── C4 — Atomic Write ───────────────────────────────────────────────────────
+
+def atomic_write_json(path: Path, data: dict):
+    """Write JSON atomically: write to temp file, then rename.
+
+    Prevents data loss if the process crashes mid-write."""
+    dir_path = path.parent
+    with tempfile.NamedTemporaryFile(
+        mode='w', dir=dir_path, suffix='.tmp',
+        delete=False, encoding='utf-8'
+    ) as tmp:
+        json.dump(data, tmp, indent=2, ensure_ascii=False)
+        tmp.flush()
+        os.fsync(tmp.fileno())
+        tmp_path = tmp.name
+    os.replace(tmp_path, str(path))
 
 
 # ── Pipeline ─────────────────────────────────────────────────────────────────
 def run_full_pipeline():
     """Execute the complete D-TRACK analysis pipeline."""
+
+    # C5 — Check failure count before retrying
+    if _state["error_count"] >= MAX_FAILURES:
+        raise RuntimeError(
+            f"Pipeline disabled after {MAX_FAILURES} consecutive failures: "
+            f"{_state['error']}"
+        )
 
     # Step 1: Load data
     print("\n" + "=" * 60)
@@ -123,6 +167,9 @@ def run_full_pipeline():
     graph_data = update_graph_risk_scores(graph_data, identities)
     _state["graph_data"] = graph_data
 
+    # M6 — Cache PyVis HTML
+    _state["graph_html"] = generate_pyvis_html(graph)
+
     # Build leaderboard
     _state["leaderboard"] = get_risk_leaderboard(identities)
 
@@ -154,6 +201,9 @@ def run_full_pipeline():
     }
 
     _state["loaded"] = True
+    # C5 — Reset error state on success
+    _state["error"] = None
+    _state["error_count"] = 0
 
     print(f"\n{'=' * 60}")
     print(f"  Pipeline Complete!")
@@ -164,27 +214,75 @@ def run_full_pipeline():
     print(f"{'=' * 60}\n")
 
 
+# C5 — Thread-safe pipeline execution with asyncio.Lock
+async def _run_pipeline_safe():
+    """Run the pipeline under lock, off the event loop thread."""
+    async with _pipeline_lock:
+        await asyncio.to_thread(run_full_pipeline)
+
+
+async def _ensure_loaded():
+    """Ensure data is loaded; run pipeline if not, respecting error limits."""
+    if not _state["loaded"]:
+        try:
+            await _run_pipeline_safe()
+        except Exception as e:
+            _state["error"] = str(e)
+            _state["error_count"] += 1
+            raise HTTPException(status_code=500, detail=str(e))
+
+
+# ── M1 — Lifespan context manager (replaces deprecated @app.on_event) ──────
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Startup / shutdown lifecycle."""
+    try:
+        await asyncio.to_thread(run_full_pipeline)
+    except Exception as e:
+        print(f"[WARN] Auto-load failed: {e}")
+        print("[WARN] Data will be loaded on first API call.")
+    yield
+
+
+# ── App Setup ────────────────────────────────────────────────────────────────
+app = FastAPI(
+    title="D-TRACK OSINT API",
+    description="Cross-platform OSINT tool for de-anonymizing drug traffickers",
+    version="1.0.0",
+    lifespan=lifespan,
+)
+
+# C2 — Restricted CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=ALLOWED_ORIGINS,
+    allow_methods=["GET", "POST", "DELETE"],
+    allow_headers=["*"],
+)
+
+
 # ── Endpoints ────────────────────────────────────────────────────────────────
 
-@app.post("/api/ingest")
+@app.post("/api/ingest", dependencies=[Depends(verify_api_key)])
 async def ingest_data():
     """Load mock_data.json and run the full D-TRACK pipeline."""
     try:
-        run_full_pipeline()
+        await _run_pipeline_safe()
         return {
             "status": "success",
             "message": "Pipeline executed successfully",
             "stats": _state["stats"],
         }
     except Exception as e:
+        _state["error"] = str(e)
+        _state["error_count"] += 1
         raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.get("/api/profiles")
 async def get_profiles():
     """Return all analyzed profiles."""
-    if not _state["loaded"]:
-        run_full_pipeline()
+    await _ensure_loaded()
     return {
         "profiles": _state["profile_analyses"],
         "count": len(_state["profile_analyses"]),
@@ -194,39 +292,34 @@ async def get_profiles():
 @app.get("/api/graph")
 async def get_graph():
     """Return graph data (nodes + edges) for visualization."""
-    if not _state["loaded"]:
-        run_full_pipeline()
+    await _ensure_loaded()
     return _state["graph_data"]
 
 
-@app.get("/api/graph/html")
+@app.get("/api/graph/html", dependencies=[Depends(verify_api_key)])
 async def get_graph_html():
     """Return an interactive PyVis HTML visualization."""
-    if not _state["loaded"]:
-        run_full_pipeline()
-    if _state["graph"] is None:
+    await _ensure_loaded()
+    # M6 — Serve cached HTML
+    if not _state.get("graph_html"):
         raise HTTPException(status_code=404, detail="Graph not built yet")
-
-    html = generate_pyvis_html(_state["graph"])
-    return HTMLResponse(content=html)
+    return HTMLResponse(content=_state["graph_html"])
 
 
-@app.get("/api/risk-scores")
+@app.get("/api/risk-scores", dependencies=[Depends(verify_api_key)])
 async def get_risk_scores():
     """Return ranked risk leaderboard."""
-    if not _state["loaded"]:
-        run_full_pipeline()
+    await _ensure_loaded()
     return {
         "leaderboard": _state["leaderboard"],
         "count": len(_state["leaderboard"]),
     }
 
 
-@app.get("/api/identities")
+@app.get("/api/identities", dependencies=[Depends(verify_api_key)])
 async def get_identities():
     """Return all unified identities."""
-    if not _state["loaded"]:
-        run_full_pipeline()
+    await _ensure_loaded()
 
     # Return without full post analyses to keep response size reasonable
     safe_identities = []
@@ -250,11 +343,10 @@ async def get_identities():
     }
 
 
-@app.get("/api/identity/{identity_id}")
+@app.get("/api/identity/{identity_id}", dependencies=[Depends(verify_api_key)])
 async def get_identity(identity_id: str):
     """Get detailed info for a specific unified identity."""
-    if not _state["loaded"]:
-        run_full_pipeline()
+    await _ensure_loaded()
 
     for identity in _state["identities"]:
         if identity["identity_id"] == identity_id:
@@ -270,99 +362,125 @@ async def analyze_text(request: AnalyzeTextRequest):
     return AnalyzeTextResponse(text=request.text, **result)
 
 
-@app.post("/api/add-profile")
-async def add_profile(profile: dict):
+# H1 — Pydantic-validated profile ingestion + C4 atomic writes
+@app.post("/api/add-profile", dependencies=[Depends(verify_api_key)])
+async def add_profile(profile: Profile):
     """
     Add a custom profile and re-run the pipeline.
-    Expects a profile dict matching the mock_data.json schema:
-    {
-      "id": "CUSTOM-001",
-      "platform": "telegram",
-      "username": "@example",
-      "display_name": "Example",
-      "bio": "...",
-      "followers": 100,
-      "phone": null,
-      "wallet_addresses": [],
-      "posts": [{"id": "P1", "timestamp": "...", "text": "...", "media_type": "text", "engagement": {}}]
-    }
+    Input is validated against the Pydantic Profile model.
     """
     try:
-        # Validate required fields
-        required = ["id", "platform", "username", "display_name"]
-        for field in required:
-            if field not in profile:
-                raise HTTPException(status_code=400, detail=f"Missing required field: {field}")
+        profile_dict = profile.model_dump()
 
-        # Ensure posts list exists
-        if "posts" not in profile:
-            profile["posts"] = []
-        if "wallet_addresses" not in profile:
-            profile["wallet_addresses"] = []
+        # H2 — Clean user-supplied text
+        profile_dict["bio"] = clean_text(
+            profile_dict.get("bio", ""), max_length=MAX_BIO_LENGTH
+        )
+        for post in profile_dict.get("posts", []):
+            post["text"] = clean_text(post.get("text", ""))
+
+        # L4 — Stamp data provenance
+        profile_dict["data_source"] = "custom"
+        profile_dict["added_at"] = datetime.now(timezone.utc).isoformat()
 
         # Append to raw profiles
-        _state["profiles_raw"].append(profile)
+        _state["profiles_raw"].append(profile_dict)
 
-        # Save updated data to disk
+        # C4 — Atomic write to disk
         dataset = {"metadata": _state["metadata"], "profiles": _state["profiles_raw"]}
-        with open(DATA_PATH, "w", encoding="utf-8") as f:
-            json.dump(dataset, f, indent=2, ensure_ascii=False)
+        atomic_write_json(DATA_PATH, dataset)
 
-        # Re-run pipeline
-        run_full_pipeline()
+        # H4 — Run pipeline off the event loop
+        await _run_pipeline_safe()
 
         return {
             "status": "success",
-            "message": f"Profile {profile['id']} added. Pipeline re-executed.",
+            "message": f"Profile {profile_dict['id']} added. Pipeline re-executed.",
             "total_profiles": len(_state["profiles_raw"]),
         }
     except HTTPException:
         raise
     except Exception as e:
+        _state["error"] = str(e)
+        _state["error_count"] += 1
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/api/add-profiles-bulk")
+@app.post("/api/add-profiles-bulk", dependencies=[Depends(verify_api_key)])
 async def add_profiles_bulk(data: dict):
     """
     Add multiple custom profiles at once.
-    Expects: {"profiles": [profile1, profile2, ...]}
+    Expects: {"profiles": [profile_dict, ...]}
+    Each profile is validated against the Pydantic Profile model.
     """
     try:
-        profiles = data.get("profiles", [])
-        if not profiles:
+        raw_profiles = data.get("profiles", [])
+        if not raw_profiles:
             raise HTTPException(status_code=400, detail="No profiles provided")
 
-        for profile in profiles:
-            if "posts" not in profile:
-                profile["posts"] = []
-            if "wallet_addresses" not in profile:
-                profile["wallet_addresses"] = []
-            _state["profiles_raw"].append(profile)
+        # H1 — Validate each profile with Pydantic
+        validated = []
+        for raw in raw_profiles:
+            p = Profile(**raw)
+            p_dict = p.model_dump()
+            # H2 — Clean text
+            p_dict["bio"] = clean_text(
+                p_dict.get("bio", ""), max_length=MAX_BIO_LENGTH
+            )
+            for post in p_dict.get("posts", []):
+                post["text"] = clean_text(post.get("text", ""))
+            # L4 — Provenance
+            p_dict["data_source"] = "custom"
+            p_dict["added_at"] = datetime.now(timezone.utc).isoformat()
+            validated.append(p_dict)
 
-        # Save and re-run
+        _state["profiles_raw"].extend(validated)
+
+        # C4 — Atomic write
         dataset = {"metadata": _state["metadata"], "profiles": _state["profiles_raw"]}
-        with open(DATA_PATH, "w", encoding="utf-8") as f:
-            json.dump(dataset, f, indent=2, ensure_ascii=False)
+        atomic_write_json(DATA_PATH, dataset)
 
-        run_full_pipeline()
+        # H4 — Run pipeline off the event loop
+        await _run_pipeline_safe()
 
         return {
             "status": "success",
-            "message": f"{len(profiles)} profiles added. Pipeline re-executed.",
+            "message": f"{len(validated)} profiles added. Pipeline re-executed.",
             "total_profiles": len(_state["profiles_raw"]),
         }
     except HTTPException:
         raise
     except Exception as e:
+        _state["error"] = str(e)
+        _state["error_count"] += 1
         raise HTTPException(status_code=500, detail=str(e))
+
+
+# L4 — Delete profile endpoint
+@app.delete("/api/profile/{profile_id}", dependencies=[Depends(verify_api_key)])
+async def delete_profile(profile_id: str):
+    """Delete a profile by ID and re-run the pipeline."""
+    original_count = len(_state["profiles_raw"])
+    _state["profiles_raw"] = [
+        p for p in _state["profiles_raw"] if p["id"] != profile_id
+    ]
+    if len(_state["profiles_raw"]) == original_count:
+        raise HTTPException(
+            status_code=404, detail=f"Profile {profile_id} not found"
+        )
+
+    dataset = {"metadata": _state["metadata"], "profiles": _state["profiles_raw"]}
+    atomic_write_json(DATA_PATH, dataset)
+
+    await _run_pipeline_safe()
+
+    return {"status": "deleted", "profile_id": profile_id}
 
 
 @app.get("/api/stats")
 async def get_stats():
     """Return dashboard summary statistics."""
-    if not _state["loaded"]:
-        run_full_pipeline()
+    await _ensure_loaded()
     return _state["stats"]
 
 
@@ -374,18 +492,8 @@ async def root():
         "status": "running",
         "docs": "/docs",
         "data_loaded": _state["loaded"],
+        "error": _state["error"],
     }
-
-
-# ── Auto-load on startup ────────────────────────────────────────────────────
-@app.on_event("startup")
-async def startup():
-    """Auto-load data on startup."""
-    try:
-        run_full_pipeline()
-    except Exception as e:
-        print(f"[WARN] Auto-load failed: {e}")
-        print("[WARN] Data will be loaded on first API call.")
 
 
 if __name__ == "__main__":

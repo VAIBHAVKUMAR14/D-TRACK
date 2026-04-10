@@ -42,6 +42,9 @@ class Profile(BaseModel):
     phone: Optional[str] = None
     wallet_addresses: list[str] = Field(default_factory=list)
     posts: list[Post] = Field(default_factory=list)
+    data_source: str = "synthetic"  # "synthetic" | "custom" | "real"
+    added_by: Optional[str] = None
+    added_at: Optional[str] = None
 
 
 class MockDataset(BaseModel):

@@ -7,12 +7,17 @@ Boosts scores for drug-related emojis and price patterns.
 """
 
 import re
+import threading
+import unicodedata
 import numpy as np
 from typing import Optional
 
-# Lazy-loaded model
+from backend.cleaner import preprocess_for_nlp
+
+# Lazy-loaded model (thread-safe)
 _model = None
 _anchor_embeddings = None
+_model_lock = threading.Lock()
 
 
 # ── Anchor Sentences ─────────────────────────────────────────────────────────
@@ -49,28 +54,22 @@ SOL_WALLET_RE = re.compile(r"\b[1-9A-HJ-NP-Za-km-z]{32,44}\b")
 
 
 def _load_model():
-    """Lazy-load the sentence-transformers model."""
+    """Lazy-load the sentence-transformers model (thread-safe)."""
     global _model, _anchor_embeddings
     if _model is not None:
         return
+    with _model_lock:
+        if _model is not None:  # double-checked locking
+            return
+        print("[NLP] Loading sentence-transformers model (all-MiniLM-L6-v2)...")
+        from sentence_transformers import SentenceTransformer
+        _model = SentenceTransformer("all-MiniLM-L6-v2")
+        # Pre-compute anchor embeddings
+        _anchor_embeddings = _model.encode(ANCHOR_SENTENCES, normalize_embeddings=True)
+        print(f"[NLP] Model loaded. {len(ANCHOR_SENTENCES)} anchor sentences encoded.")
 
-    print("[NLP] Loading sentence-transformers model (all-MiniLM-L6-v2)...")
-    from sentence_transformers import SentenceTransformer
-    _model = SentenceTransformer("all-MiniLM-L6-v2")
 
-    # Pre-compute anchor embeddings
-    _anchor_embeddings = _model.encode(ANCHOR_SENTENCES, normalize_embeddings=True)
-    print(f"[NLP] Model loaded. {len(ANCHOR_SENTENCES)} anchor sentences encoded.")
-
-
-def _cosine_similarity(vec_a: np.ndarray, vec_b: np.ndarray) -> float:
-    """Compute cosine similarity between two vectors."""
-    dot = np.dot(vec_a, vec_b)
-    norm_a = np.linalg.norm(vec_a)
-    norm_b = np.linalg.norm(vec_b)
-    if norm_a == 0 or norm_b == 0:
-        return 0.0
-    return float(dot / (norm_a * norm_b))
+# _cosine_similarity removed — using vectorized dot product with normalized embeddings
 
 
 def detect_drug_emojis(text: str) -> tuple[bool, list[str]]:
@@ -89,6 +88,7 @@ def detect_price_pattern(text: str) -> bool:
 
 def extract_wallet_addresses(text: str) -> list[str]:
     """Extract cryptocurrency wallet addresses from text."""
+    text = unicodedata.normalize('NFKC', text)
     wallets = []
     wallets.extend(ETH_WALLET_RE.findall(text))
     wallets.extend(BTC_WALLET_RE.findall(text))
@@ -118,15 +118,14 @@ def compute_intent_score(text: str) -> dict:
     """
     _load_model()
 
+    # Preprocess text for NLP
+    nlp_text = preprocess_for_nlp(text)
+
     # Encode the input text
-    text_embedding = _model.encode([text], normalize_embeddings=True)[0]
+    text_embedding = _model.encode([nlp_text], normalize_embeddings=True)[0]
 
-    # Compute similarity against all anchor sentences
-    similarities = []
-    for anchor_emb in _anchor_embeddings:
-        sim = _cosine_similarity(text_embedding, anchor_emb)
-        similarities.append(sim)
-
+    # Vectorized cosine similarity (embeddings are already unit-normalized)
+    similarities = text_embedding @ _anchor_embeddings.T
     max_sim_idx = int(np.argmax(similarities))
     max_sim = float(similarities[max_sim_idx])
     matched_anchor = ANCHOR_SENTENCES[max_sim_idx]
@@ -134,10 +133,10 @@ def compute_intent_score(text: str) -> dict:
     # Base score from semantic similarity
     base_score = max(0.0, max_sim)
 
-    # Emoji boost
+    # Emoji boost — only apply if base semantic score is already suspicious
     has_emojis, found_emojis = detect_drug_emojis(text)
     emoji_boost = 0.0
-    if has_emojis:
+    if has_emojis and base_score >= 0.25:
         emoji_boost = min(0.15, 0.05 * len(found_emojis))
 
     # Price pattern boost
