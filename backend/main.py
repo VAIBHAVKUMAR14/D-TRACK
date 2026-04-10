@@ -40,7 +40,8 @@ from backend.graph_builder import (
 from backend.risk_scorer import (
     compute_risk_scores, update_graph_risk_scores, get_risk_leaderboard
 )
-from backend.stylometry import find_probable_burner_matches
+from backend.stylometry import find_probable_burner_matches, extract_stylometric_features
+from backend.profiler import build_complete_profile
 
 
 # ── Configuration ────────────────────────────────────────────────────────────
@@ -248,7 +249,11 @@ async def _run_pipeline_safe():
 
 
 async def _ensure_loaded():
-    """Ensure data is loaded; run pipeline if not, respecting error limits."""
+    """
+    Ensure data is loaded. Internally acquires _pipeline_lock via
+    _run_pipeline_safe(). Do NOT call this from within a context that
+    already holds _pipeline_lock — asyncio.Lock is not reentrant.
+    """
     if not _state["loaded"]:
         try:
             await _run_pipeline_safe()
@@ -274,7 +279,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="D-TRACK OSINT API",
     description="Cross-platform OSINT tool for de-anonymizing drug traffickers",
-    version="1.0.0",
+    version="2.0.0",
     lifespan=lifespan,
 )
 
@@ -371,12 +376,32 @@ async def get_identities():
 
 @app.get("/api/identity/{identity_id}", dependencies=[Depends(verify_api_key)])
 async def get_identity(identity_id: str):
-    """Get detailed info for a specific unified identity."""
+    """Get detailed info for a specific unified identity with full profiling."""
     await _ensure_loaded()
 
     for identity in _state["identities"]:
         if identity["identity_id"] == identity_id:
-            return identity
+            # Build complete profile for the primary profile in this identity
+            profiles = identity.get("profiles", [])
+            if not profiles:
+                return identity
+
+            primary = profiles[0]
+            post_analyses = primary.get("post_analyses", [])
+            bot_assessment = primary.get("bot_assessment", {})
+            style_features = extract_stylometric_features(
+                primary.get("posts_raw", post_analyses)
+            )
+
+            return build_complete_profile(
+                profile=primary,
+                post_analyses=post_analyses,
+                identity=identity,
+                centrality_metrics=_state["centrality_metrics"],
+                bot_assessment=bot_assessment,
+                stylometric_features=style_features,
+                burner_leads=_state["burner_leads"],
+            )
 
     raise HTTPException(status_code=404, detail=f"Identity {identity_id} not found")
 

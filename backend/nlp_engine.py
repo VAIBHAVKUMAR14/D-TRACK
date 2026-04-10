@@ -210,6 +210,7 @@ def analyze_profile(profile: dict) -> dict:
         "wallet_addresses": profile.get("wallet_addresses", []),
         "phone": profile.get("phone"),
         "post_analyses": post_analyses,
+        "posts_raw": profile.get("posts", []),  # keep raw posts for stylometry
         "bot_assessment": bot_assessment,
         "is_likely_bot": bot_assessment["is_likely_bot"],
     }

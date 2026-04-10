@@ -223,8 +223,10 @@ def find_probable_burner_matches(
     for identity in identities:
         for profile in identity.get('profiles', []):
             pid = profile['profile_id']
+            # Prefer posts_raw (has timestamps for biological clock)
+            # over post_analyses (NLP-scored output without timestamps)
             style_features[pid] = extract_stylometric_features(
-                profile.get('post_analyses', [])
+                profile.get('posts_raw', profile.get('post_analyses', []))
             )
             profile_to_identity[pid] = identity['identity_id']
 
