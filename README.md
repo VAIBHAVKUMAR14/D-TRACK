@@ -35,15 +35,17 @@ The API will:
 - Run the full NLP + Identity + Graph + Risk pipeline
 - API docs available at `http://localhost:8000/docs`
 
-### 3. Start the Frontend (Streamlit)
+### 3. Start the Frontend (React / Vite)
 
 Open a **new terminal** and run:
 
 ```bash
-streamlit run frontend/app.py --server.port 8501
+cd material-shadcn-1.0.0/material-shadcn-1.0.0
+npm install
+npm run dev
 ```
 
-The dashboard will open at `http://localhost:8501`
+The dashboard will open at `http://localhost:5173` (check terminal output if different)
 
 ---
 
@@ -61,8 +63,8 @@ d_track/
 │   ├── identity_resolver.py    # Handle stitching + wallet linking
 │   ├── graph_builder.py        # NetworkX shadow-graph builder
 │   └── risk_scorer.py          # Risk scoring engine
-├── frontend/
-│   └── app.py                  # Streamlit dashboard
+├── material-shadcn-1.0.0/
+│   └── material-shadcn-1.0.0/  # React / Vite Frontend (Shadcn UI)
 ├── wtf_reference/              # Cloned reference repository
 ├── requirements.txt            # Python dependencies
 ├── D_TRACK_Overview.md         # Project overview (PPT-style)
@@ -102,7 +104,7 @@ curl -X POST http://localhost:8000/api/analyze \
 ## 🔧 Configuration
 
 - **Backend port:** Change `--port 8000` in uvicorn command
-- **Frontend port:** Change `--server.port 8501` in streamlit command
+- **Frontend port:** Change via Vite config in `material-shadcn-1.0.0/material-shadcn-1.0.0/vite.config.ts`
 - **Mock data:** Edit `data/mock_data.json` to add/modify profiles
 - **Anchor sentences:** Edit `ANCHOR_SENTENCES` in `backend/nlp_engine.py`
 
