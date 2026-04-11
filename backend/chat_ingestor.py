@@ -291,22 +291,26 @@ def ingest_all_chats() -> list[dict]:
     1. Parse raw exports directly (Telegram JSON, WhatsApp TXT)
     2. Fall back to reading C++ ingestor CSV output if raw files unavailable
     """
+    if not CHAT_DATA_DIR.exists():
+        print(f"[WARN] Chat data directory not found at {CHAT_DATA_DIR}. Skipping pure-Python chat extraction.")
+        
     all_messages = []
     all_alerts = []
 
-    # Parse Telegram exports
-    for tg_file in CHAT_DATA_DIR.glob("*.json"):
-        print(f"[CHAT] Parsing Telegram export: {tg_file.name}")
-        msgs, alerts = parse_telegram_export(tg_file)
-        all_messages.extend(msgs)
-        all_alerts.extend(alerts)
+    if CHAT_DATA_DIR.exists():
+        # Parse Telegram exports
+        for tg_file in CHAT_DATA_DIR.glob("*.json"):
+            print(f"[CHAT] Parsing Telegram export: {tg_file.name}")
+            msgs, alerts = parse_telegram_export(tg_file)
+            all_messages.extend(msgs)
+            all_alerts.extend(alerts)
 
-    # Parse WhatsApp exports
-    for wa_file in CHAT_DATA_DIR.glob("*.txt"):
-        print(f"[CHAT] Parsing WhatsApp export: {wa_file.name}")
-        msgs, alerts = parse_whatsapp_export(wa_file)
-        all_messages.extend(msgs)
-        all_alerts.extend(alerts)
+        # Parse WhatsApp exports
+        for wa_file in CHAT_DATA_DIR.glob("*.txt"):
+            print(f"[CHAT] Parsing WhatsApp export: {wa_file.name}")
+            msgs, alerts = parse_whatsapp_export(wa_file)
+            all_messages.extend(msgs)
+            all_alerts.extend(alerts)
 
     # Fall back to C++ CSV output if no raw files found
     if not all_messages:

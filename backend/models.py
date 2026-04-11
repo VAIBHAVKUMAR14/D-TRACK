@@ -173,3 +173,12 @@ class NetworkRole(BaseModel):
     network_role: str
     description: str
     metrics_used: dict = Field(default_factory=dict)
+
+
+class BulkProfileRequest(BaseModel):
+    profiles: list[Profile]
+
+
+class IngestChatRequest(BaseModel):
+    text: str
+    platform_hint: str = "auto"

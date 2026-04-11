@@ -27,7 +27,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from backend.cleaner import clean_text, clean_profile, MAX_BIO_LENGTH, MAX_TEXT_LENGTH
 from backend.models import (
-    AnalyzeTextRequest, AnalyzeTextResponse, DashboardStats, Profile
+    AnalyzeTextRequest, AnalyzeTextResponse, DashboardStats, Profile,
+    BulkProfileRequest, IngestChatRequest
 )
 from backend.nlp_engine import analyze_profile, compute_intent_score
 from backend.identity_resolver import (
@@ -42,7 +43,7 @@ from backend.risk_scorer import (
 )
 from backend.stylometry import find_probable_burner_matches, extract_stylometric_features
 from backend.profiler import build_complete_profile
-from backend.chat_ingestor import ingest_all_chats
+from backend.chat_ingestor import ingest_all_chats, extract_entities_from_text
 
 
 # ── Configuration ────────────────────────────────────────────────────────────
@@ -67,6 +68,9 @@ def verify_api_key(
 
 
 # ── In-Memory State ─────────────────────────────────────────────────────────
+# Note: Reads from _state are lock-free and protected by Python's GIL.
+# While safe for most cases, deeply nested concurrent updates (e.g. sorting)
+# could theoretically manifest inconsistencies during pipeline execution.
 _state = {
     "loaded": False,
     "error": None,           # C5 — track pipeline errors
@@ -88,7 +92,7 @@ _state = {
 # C5 — asyncio lock to prevent concurrent pipeline runs
 _pipeline_lock = asyncio.Lock()
 
-DATA_PATH = Path(__file__).resolve().parent.parent / "data" / "mock_data.json"
+DATA_PATH = Path(__file__).resolve().parent.parent / "mock_data.json"
 
 
 # ── C4 — Atomic Write ───────────────────────────────────────────────────────
@@ -282,8 +286,11 @@ async def _ensure_loaded():
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Startup / shutdown lifecycle."""
+    if API_KEY == "changeme-replace-in-production":
+        print("[WARN] Using default API key 'changeme-replace-in-production'. "
+              "Please set DTRACK_API_KEY environment variable in production!")
     try:
-        await asyncio.to_thread(run_full_pipeline)
+        await _run_pipeline_safe()
     except Exception as e:
         print(f"[WARN] Auto-load failed: {e}")
         print("[WARN] Data will be loaded on first API call.")
@@ -421,7 +428,7 @@ async def get_identity(identity_id: str):
     raise HTTPException(status_code=404, detail=f"Identity {identity_id} not found")
 
 
-@app.post("/api/analyze")
+@app.post("/api/analyze", dependencies=[Depends(verify_api_key)])
 async def analyze_text(request: AnalyzeTextRequest):
     """Analyze a single text string for trafficking intent."""
     result = compute_intent_score(request.text)
@@ -463,14 +470,14 @@ async def add_profile(profile: Profile):
 
 
 @app.post("/api/add-profiles-bulk", dependencies=[Depends(verify_api_key)])
-async def add_profiles_bulk(data: dict):
+async def add_profiles_bulk(data: BulkProfileRequest):
     """
     Add multiple custom profiles at once.
-    Expects: {"profiles": [profile_dict, ...]}
+    Expects: {"profiles": [{"id": ..., ...}]}
     Each profile is validated against the Pydantic Profile model.
     """
     try:
-        raw_profiles = data.get("profiles", [])
+        raw_profiles = data.profiles
         if not raw_profiles:
             raise HTTPException(status_code=400, detail="No profiles provided")
 
@@ -564,6 +571,92 @@ async def health():
         "loaded": _state["loaded"],
         "error": _state.get("error"),
         "error_count": _state.get("error_count", 0),
+    }
+
+
+@app.post("/api/ingest-chat", dependencies=[Depends(verify_api_key)])
+async def ingest_chat(request: IngestChatRequest):
+    """
+    Ingest a raw chat dump safely without triggering the full pipeline.
+    Identifies entities and links/creates shadow profiles appropriately.
+    """
+    await _ensure_loaded()
+    text = request.text
+    platform = request.platform_hint if request.platform_hint != "auto" else "unknown"
+    
+    alerts = extract_entities_from_text(text, msg_id="ingest_ui_1")
+    
+    wallets_found = list(set([a["value"] for a in alerts if a["type"] in ("ETH_WALLET", "BTC_WALLET")]))
+    phones_found = list(set([a["value"] for a in alerts if a["type"] == "PHONE"]))
+    imeis_found = list(set([a["value"] for a in alerts if a["type"] == "IMEI"]))
+    plates_found = list(set([a["value"] for a in alerts if a["type"] == "LICENSE_PLATE"]))
+    
+    profiles_linked = 0
+    new_profile_ids = []
+    matched_profiles = []
+    
+    for profile in _state["profiles_raw"]:
+        match = False
+        if any(w in profile.get("wallet_addresses", []) for w in wallets_found):
+            match = True
+        if profile.get("phone") and profile.get("phone") in phones_found:
+            match = True
+        
+        if match:
+            matched_profiles.append(profile["id"])
+            profile["_chat_source"] = "manual_ingest"
+            existing_w = set(profile.get("wallet_addresses", []))
+            existing_w.update(wallets_found)
+            profile["wallet_addresses"] = list(existing_w)
+            
+            if not profile.get("phone") and phones_found:
+                profile["phone"] = phones_found[0]
+            
+            profiles_linked += 1
+
+    profiles_created = 0
+    if not matched_profiles and (wallets_found or phones_found):
+        uid = f"CHAT-{secrets.token_hex(4).upper()}"
+        new_profile = {
+            "id": uid,
+            "platform": platform,
+            "username": f"@Unknown_{uid[-4:]}",
+            "display_name": "Unknown Entity",
+            "bio": "Auto-created from chat ingest",
+            "followers": 0,
+            "phone": phones_found[0] if phones_found else None,
+            "wallet_addresses": wallets_found,
+            "posts": [{
+                "id": f"{uid}-P01",
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "text": text[:2000],
+                "media_type": "text",
+                "engagement": {}
+            }],
+            "_data_source": "chat_export",
+            "_extracted_phones": phones_found,
+            "_extracted_imeis": imeis_found,
+            "_extracted_plates": plates_found,
+        }
+        _state["profiles_raw"].append(new_profile)
+        new_profile_ids.append(uid)
+        profiles_created += 1
+        
+    dataset = {"metadata": _state["metadata"], "profiles": _state["profiles_raw"]}
+    atomic_write_json(DATA_PATH, dataset)
+    
+    return {
+        "status": "success",
+        "entities_found": {
+            "wallets": wallets_found,
+            "phones": phones_found,
+            "imeis": imeis_found,
+            "license_plates": plates_found
+        },
+        "profiles_linked": profiles_linked,
+        "matched_profiles": matched_profiles,
+        "profiles_created": profiles_created,
+        "new_profile_ids": new_profile_ids
     }
 
 

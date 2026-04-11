@@ -1,0 +1,2079 @@
+{
+  "metadata": {
+    "version": "3.0",
+    "created": "2026-04-11T00:00:00Z",
+    "profile_count": 38,
+    "note": "Fully synthetic dataset. All names, wallets, phones, and identifiers are fabricated for testing only.",
+    "features_covered": [
+      "cross_platform_wallet_links",
+      "phone_based_identity_links",
+      "multi_cluster_identity_resolution",
+      "bot_detection_temporal",
+      "bot_detection_content_repetition",
+      "stylometric_burner_pairs",
+      "promoter_network",
+      "runner_network",
+      "nlp_high_intent_posts",
+      "chat_ingestor_matching_profiles",
+      "entity_extraction_imei_plates_phones",
+      "benign_noise_profiles"
+    ]
+  },
+  "profiles": [
+    {
+      "id": "PROF-001",
+      "platform": "instagram",
+      "username": "shadow_dealer_ig",
+      "display_name": "Shadow Deals",
+      "bio": "Premium quality. DM for menu. 🌿❄️",
+      "followers": 1420,
+      "phone": "+91 99999 00001",
+      "wallet_addresses": [
+        "0x6d361f653a2f03b7a1deb6fc2dc11f0341a6be46"
+      ],
+      "posts": [
+        {
+          "id": "P001-1",
+          "timestamp": "2026-01-05T14:30:00Z",
+          "text": "❄️ Fresh batch arrived. 2500/g min 3g. Crypto only: 0x6d361f653a2f03b7a1deb6fc2dc11f0341a6be46 🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P001-2",
+          "timestamp": "2026-01-08T11:00:00Z",
+          "text": "Wholesale available this week. Bulk deals for regulars 🌿 DM for rates",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P001-3",
+          "timestamp": "2026-01-12T22:10:00Z",
+          "text": "Re-stocked everything. New items on menu. Minimum order applies. DM 💊",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P001-4",
+          "timestamp": "2026-01-18T09:45:00Z",
+          "text": "Premium grade only. No middlemen. Direct from source. ❄️🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P001-5",
+          "timestamp": "2026-01-22T16:20:00Z",
+          "text": "Fast delivery, discreet packaging. Payment in crypto. 2500/g 💎",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P001-6",
+          "timestamp": "2026-01-27T20:00:00Z",
+          "text": "Menu updated. New items added. Hit me up for full list 🌱",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P001-7",
+          "timestamp": "2026-02-01T13:00:00Z",
+          "text": "Check out @shad0w_official on Telegram for faster response 📢",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-002",
+      "platform": "telegram",
+      "username": "shad0w_official",
+      "display_name": "Shad0w Official",
+      "bio": "Fast service. Discreet. Crypto.",
+      "followers": 890,
+      "phone": "+91 99999 00001",
+      "wallet_addresses": [
+        "0x6d361f653a2f03b7a1deb6fc2dc11f0341a6be46"
+      ],
+      "posts": [
+        {
+          "id": "P002-1",
+          "timestamp": "2026-01-06T10:00:00Z",
+          "text": "New batch landed. Premium only. 0x6d361f653a2f03b7a1deb6fc2dc11f0341a6be46 for payments. DM 🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P002-2",
+          "timestamp": "2026-01-10T14:30:00Z",
+          "text": "Wholesale enquiries welcome. 500g+ gets special rate. ❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P002-3",
+          "timestamp": "2026-01-15T21:00:00Z",
+          "text": "Menu: ice 2500/g, green 800/g, tabs 200/pc. DM to order 💊",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P002-4",
+          "timestamp": "2026-01-20T08:00:00Z",
+          "text": "Restock complete. All items available. Fast turnaround 🌿",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P002-5",
+          "timestamp": "2026-01-25T17:45:00Z",
+          "text": "Discreet packaging guaranteed. Nationwide delivery. Crypto only 💎",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P002-6",
+          "timestamp": "2026-02-02T12:00:00Z",
+          "text": "Also on IG: @shadow_dealer_ig. Same operator. Verified 📢",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-003",
+      "platform": "twitter",
+      "username": "shadow_x_trade",
+      "display_name": "ShadowTrade X",
+      "bio": "Anonymous. Efficient. Reliable.",
+      "followers": 320,
+      "phone": null,
+      "wallet_addresses": [
+        "0x6d361f653a2f03b7a1deb6fc2dc11f0341a6be46"
+      ],
+      "posts": [
+        {
+          "id": "P003-1",
+          "timestamp": "2026-01-09T19:00:00Z",
+          "text": "Supply chain update. Fresh batch incoming. DM for ETA ❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P003-2",
+          "timestamp": "2026-01-14T10:30:00Z",
+          "text": "Prices updated. Best in market. Quality verified. 2500/g 🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P003-3",
+          "timestamp": "2026-01-19T14:00:00Z",
+          "text": "New delivery routes established. Faster turnaround now 🌿",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P003-4",
+          "timestamp": "2026-01-24T20:15:00Z",
+          "text": "Crypto payments only. BTC ETH accepted. DM for wallet 💎",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-004",
+      "platform": "instagram",
+      "username": "shadow_runner_ig",
+      "display_name": "Runner04",
+      "bio": "Logistics. Pickup & drop. Fast.",
+      "followers": 210,
+      "phone": "+91 99999 00002",
+      "wallet_addresses": [
+        "0x8ed060b3a3108d33c146ac2bad917aaa1d2b87fb"
+      ],
+      "posts": [
+        {
+          "id": "P004-1",
+          "timestamp": "2026-01-07T09:00:00Z",
+          "text": "Drop point active. Pickup slots 10am-2pm. DM for location 📍",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P004-2",
+          "timestamp": "2026-01-11T15:00:00Z",
+          "text": "Handoff done. Next drop tomorrow. Contact for spot 🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P004-3",
+          "timestamp": "2026-01-16T11:30:00Z",
+          "text": "Meet arranged. Delivery successful. Available again Friday",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P004-4",
+          "timestamp": "2026-01-21T08:45:00Z",
+          "text": "New pickup location near station. DM for details. Fast service",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P004-5",
+          "timestamp": "2026-01-26T17:00:00Z",
+          "text": "Working with @shadow_dealer_ig. Trusted runner. All areas 📢",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-005",
+      "platform": "instagram",
+      "username": "vendor_mumbai",
+      "display_name": "Mumbai Vendor",
+      "bio": "Mumbai local. Best prices guaranteed.",
+      "followers": 650,
+      "phone": "+91 99999 00003",
+      "wallet_addresses": [
+        "0x8b38d41793396706eca3e9ddf179cd1ea0c65741"
+      ],
+      "posts": [
+        {
+          "id": "P005-1",
+          "timestamp": "2026-02-03T13:00:00Z",
+          "text": "Mumbai stock ready. 2000/g for ice. 700/g green. DM ❄️🌿",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P005-2",
+          "timestamp": "2026-02-07T10:30:00Z",
+          "text": "Bulk available. Min order 10g for special rate. Crypto 💎",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P005-3",
+          "timestamp": "2026-02-11T19:00:00Z",
+          "text": "New menu out. Tabs added 150/pc. DM for full list 💊",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P005-4",
+          "timestamp": "2026-02-15T14:00:00Z",
+          "text": "Stock running low. Order before weekend. Fast delivery 🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P005-5",
+          "timestamp": "2026-02-20T09:15:00Z",
+          "text": "Restocked. Premium batch. Quality checked. 2000/g ❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P005-6",
+          "timestamp": "2026-02-24T16:30:00Z",
+          "text": "Check my TG for faster orders. Same rates. More secure",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-006",
+      "platform": "telegram",
+      "username": "vmumbai_tg",
+      "display_name": "VMumbai TG",
+      "bio": "TG channel. Orders here.",
+      "followers": 430,
+      "phone": "+91 99999 00003",
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "P006-1",
+          "timestamp": "2026-02-04T11:00:00Z",
+          "text": "Order here for faster processing. Rates same as IG ❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P006-2",
+          "timestamp": "2026-02-08T15:30:00Z",
+          "text": "Mumbai delivery active. All areas covered. DM for slot 🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P006-3",
+          "timestamp": "2026-02-12T20:00:00Z",
+          "text": "Payment: ETH preferred. Also BTC. No UPI. Crypto only 💎",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P006-4",
+          "timestamp": "2026-02-16T10:45:00Z",
+          "text": "Stock update: ice ✅ green ✅ tabs ✅. DM now 💊",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P006-5",
+          "timestamp": "2026-02-21T08:00:00Z",
+          "text": "Weekend special: 10% off bulk orders. Contact before Friday",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-007",
+      "platform": "telegram",
+      "username": "northern_supply",
+      "display_name": "Northern Supply",
+      "bio": "North India supplier. Wholesale.",
+      "followers": 1100,
+      "phone": "+91 99999 00004",
+      "wallet_addresses": [
+        "0xeeab7c2fa3ebc2131de166ed435c00bef9954c08",
+        "0x9e5ac6c0fbb3e0123f9aca793f85140cb2a557ae"
+      ],
+      "posts": [
+        {
+          "id": "P007-1",
+          "timestamp": "2026-01-03T08:00:00Z",
+          "text": "Wholesale only. Min 50g. Rates negotiable. Wallet: 0xeeab7c2fa3ebc2131de166ed435c00bef9954c08 ❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P007-2",
+          "timestamp": "2026-01-08T12:30:00Z",
+          "text": "New batch in from north. Premium quality. Bulk deals available 🌿",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P007-3",
+          "timestamp": "2026-01-13T16:00:00Z",
+          "text": "Supply chain secured. Regular deliveries. DM for schedule 🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P007-4",
+          "timestamp": "2026-01-18T10:00:00Z",
+          "text": "Price list: 50g = 1.1L, 100g = 2L, 500g = 9L. DM ❄️💎",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P007-5",
+          "timestamp": "2026-01-23T14:30:00Z",
+          "text": "Trusted by retailers across north. References available",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P007-6",
+          "timestamp": "2026-01-28T09:00:00Z",
+          "text": "New item added: premium tabs. 180/pc bulk rate. DM 💊",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P007-7",
+          "timestamp": "2026-02-02T11:15:00Z",
+          "text": "Also active on X: @n_supply_x. Same team 📢",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-008",
+      "platform": "twitter",
+      "username": "n_supply_x",
+      "display_name": "NSupply X",
+      "bio": "Wholesale supplier. DM.",
+      "followers": 180,
+      "phone": null,
+      "wallet_addresses": [
+        "0xeeab7c2fa3ebc2131de166ed435c00bef9954c08"
+      ],
+      "posts": [
+        {
+          "id": "P008-1",
+          "timestamp": "2026-01-05T09:30:00Z",
+          "text": "Wholesale enquiries on TG: @northern_supply. Verified 📢",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P008-2",
+          "timestamp": "2026-01-12T14:00:00Z",
+          "text": "Supply stable. All orders fulfilled this week ❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P008-3",
+          "timestamp": "2026-01-20T10:45:00Z",
+          "text": "New stock arrived. DM for updated rates 🌿",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P008-4",
+          "timestamp": "2026-01-27T16:30:00Z",
+          "text": "Bulk orders only. Minimum 50g. Quality guaranteed 💎",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-009",
+      "platform": "instagram",
+      "username": "delhi_plug",
+      "display_name": "Delhi Plug",
+      "bio": "Delhi NCR. Fast. Discreet. 🔌",
+      "followers": 980,
+      "phone": "+91 99999 00005",
+      "wallet_addresses": [
+        "0x55e9de7d2d39c8d0b0096a3652435a82681f18c7"
+      ],
+      "posts": [
+        {
+          "id": "P009-1",
+          "timestamp": "2026-02-01T10:00:00Z",
+          "text": "Delhi NCR coverage. All areas. DM for zone confirmation 🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P009-2",
+          "timestamp": "2026-02-05T14:30:00Z",
+          "text": "Ice 2200/g. Green 750/g. Minimum 5g. Crypto only ❄️🌿",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P009-3",
+          "timestamp": "2026-02-09T19:00:00Z",
+          "text": "New runner added. Faster deliveries now. DM to order 📍",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P009-4",
+          "timestamp": "2026-02-13T08:45:00Z",
+          "text": "Weekend batch available. Premium only. DM before 6pm ❄️💎",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P009-5",
+          "timestamp": "2026-02-17T12:00:00Z",
+          "text": "Trusted by 100+ clients. No nonsense. Fast service 🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P009-6",
+          "timestamp": "2026-02-22T15:30:00Z",
+          "text": "Also on TG: @delhi_plug_tg. Quicker response there 📢",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-010",
+      "platform": "telegram",
+      "username": "delhi_plug_tg",
+      "display_name": "Delhi Plug TG",
+      "bio": "TG orders. Same team.",
+      "followers": 560,
+      "phone": "+91 99999 00005",
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "P010-1",
+          "timestamp": "2026-02-02T11:00:00Z",
+          "text": "Main channel for Delhi orders. IG backup only 🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P010-2",
+          "timestamp": "2026-02-06T09:30:00Z",
+          "text": "Order slots open. 3 left today. DM fast ❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P010-3",
+          "timestamp": "2026-02-10T15:00:00Z",
+          "text": "Delivery estimate 2-4 hrs Delhi. Crypto payment upfront 💎",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P010-4",
+          "timestamp": "2026-02-14T10:30:00Z",
+          "text": "Weekend special: free delivery orders above 10g 🌿",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P010-5",
+          "timestamp": "2026-02-18T08:00:00Z",
+          "text": "New runner onboarded for South Delhi. Faster drops now 📍",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-011",
+      "platform": "instagram",
+      "username": "hydro_plug_hyd",
+      "display_name": "Hydro Plug HYD",
+      "bio": "Hyderabad. Quality guaranteed. 🧪",
+      "followers": 720,
+      "phone": "+91 99999 00006",
+      "wallet_addresses": [
+        "0x76d6a6e164278ffe012aa1208dd05d4699e48b5b"
+      ],
+      "posts": [
+        {
+          "id": "P011-1",
+          "timestamp": "2026-01-04T13:00:00Z",
+          "text": "Hyderabad batch ready. Ice + green available. DM ❄️🌿",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P011-2",
+          "timestamp": "2026-01-09T10:30:00Z",
+          "text": "New stock. Payment wallet: 0x76d6a6e164278ffe012aa1208dd05d4699e48b5b crypto only 💎",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P011-3",
+          "timestamp": "2026-01-14T17:00:00Z",
+          "text": "Premium quality tested. 2300/g. Min 5g. Contact now ❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P011-4",
+          "timestamp": "2026-01-19T09:00:00Z",
+          "text": "Hyd coverage: Banjara Hills, Jubilee Hills, HITEC. DM 📍",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P011-5",
+          "timestamp": "2026-01-24T14:30:00Z",
+          "text": "Restock done. Full menu available. DM for list 🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P011-6",
+          "timestamp": "2026-01-29T11:00:00Z",
+          "text": "TG channel active: @hyderabad_ops. Faster response 📢",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-012",
+      "platform": "telegram",
+      "username": "hyderabad_ops",
+      "display_name": "Hyderabad Ops",
+      "bio": "HYD operations. Order here.",
+      "followers": 390,
+      "phone": "+91 99999 00006",
+      "wallet_addresses": [
+        "0x76d6a6e164278ffe012aa1208dd05d4699e48b5b"
+      ],
+      "posts": [
+        {
+          "id": "P012-1",
+          "timestamp": "2026-01-06T12:00:00Z",
+          "text": "HYD orders taken here. IG for enquiries only 🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P012-2",
+          "timestamp": "2026-01-11T08:30:00Z",
+          "text": "Slots available: morning 9-12, evening 5-8. DM to book ❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P012-3",
+          "timestamp": "2026-01-16T15:00:00Z",
+          "text": "All payments crypto. ETH preferred. No cash 💎",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P012-4",
+          "timestamp": "2026-01-21T10:45:00Z",
+          "text": "New HYD areas added. Secunderabad now covered 📍",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P012-5",
+          "timestamp": "2026-01-26T19:00:00Z",
+          "text": "Quality check passed. Fresh batch. 2300/g ❄️",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-013",
+      "platform": "instagram",
+      "username": "bengaluru_ice",
+      "display_name": "BLR Ice",
+      "bio": "Bengaluru. Top grade. ❄️🔌",
+      "followers": 1650,
+      "phone": "+91 99999 00007",
+      "wallet_addresses": [
+        "0x4209e12492499fbab452a4691db2d7c2fd7ee440"
+      ],
+      "posts": [
+        {
+          "id": "P013-1",
+          "timestamp": "2026-01-02T11:00:00Z",
+          "text": "BLR batch in. Premium ice 2400/g. Green 900/g. DM ❄️🌿",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P013-2",
+          "timestamp": "2026-01-07T15:30:00Z",
+          "text": "Wallet updated: 0x4209e12492499fbab452a4691db2d7c2fd7ee440 only. No other payments 💎",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P013-3",
+          "timestamp": "2026-01-12T09:00:00Z",
+          "text": "Indiranagar, Koramangala, Whitefield covered. DM zone 📍",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P013-4",
+          "timestamp": "2026-01-17T13:30:00Z",
+          "text": "Premium tabs added. 190/pc. Min 10pc. DM 💊",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P013-5",
+          "timestamp": "2026-01-22T20:00:00Z",
+          "text": "Weekend restock. All items. Bulk deals available ❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P013-6",
+          "timestamp": "2026-01-27T10:00:00Z",
+          "text": "Check @blr_ice_tg for faster orders. Same team 📢",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P013-7",
+          "timestamp": "2026-02-01T14:30:00Z",
+          "text": "Also on X: @blr_ops_x. Updates posted there 📢",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-014",
+      "platform": "telegram",
+      "username": "blr_ice_tg",
+      "display_name": "BLR Ice TG",
+      "bio": "Bengaluru TG. Orders only.",
+      "followers": 710,
+      "phone": null,
+      "wallet_addresses": [
+        "0x4209e12492499fbab452a4691db2d7c2fd7ee440"
+      ],
+      "posts": [
+        {
+          "id": "P014-1",
+          "timestamp": "2026-01-03T10:00:00Z",
+          "text": "BLR primary channel. IG for general enquiries 🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P014-2",
+          "timestamp": "2026-01-08T08:30:00Z",
+          "text": "Slots today: 11am, 2pm, 6pm. DM to confirm ❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P014-3",
+          "timestamp": "2026-01-13T16:00:00Z",
+          "text": "All payments ETH wallet only. No BTC. No UPI 💎",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P014-4",
+          "timestamp": "2026-01-18T11:30:00Z",
+          "text": "New area added: Electronic City. Runner active 📍",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P014-5",
+          "timestamp": "2026-01-23T19:00:00Z",
+          "text": "Premium batch verified. Zero cuts. 2400/g ❄️🌿",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P014-6",
+          "timestamp": "2026-01-28T09:00:00Z",
+          "text": "X account active: @blr_ops_x for updates 📢",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-015",
+      "platform": "twitter",
+      "username": "blr_ops_x",
+      "display_name": "BLR Ops X",
+      "bio": "BLR updates here.",
+      "followers": 95,
+      "phone": null,
+      "wallet_addresses": [
+        "0x4209e12492499fbab452a4691db2d7c2fd7ee440"
+      ],
+      "posts": [
+        {
+          "id": "P015-1",
+          "timestamp": "2026-01-04T09:00:00Z",
+          "text": "BLR supply stable. Order via TG: @blr_ice_tg 📢",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P015-2",
+          "timestamp": "2026-01-10T14:00:00Z",
+          "text": "Restock confirmed. Full menu available ❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P015-3",
+          "timestamp": "2026-01-16T10:30:00Z",
+          "text": "New runner BLR south added. Faster drops 📍",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P015-4",
+          "timestamp": "2026-01-22T16:00:00Z",
+          "text": "Premium ice 2400/g unchanged. Quality consistent 💎",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-016",
+      "platform": "instagram",
+      "username": "night_vendor_a",
+      "display_name": "Night Vendor A",
+      "bio": "Late night. Fast. Discreet. 🌙",
+      "followers": 340,
+      "phone": "+91 99999 00008",
+      "wallet_addresses": [
+        "0x48acf07a595db5131d63de7539309b33b7ea6ec5"
+      ],
+      "posts": [
+        {
+          "id": "P016-1",
+          "timestamp": "2026-01-10T03:39:00Z",
+          "text": "Ice available now. 2500/g min 3g. DM for address. Payment crypto ❄️🔌💊",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P016-2",
+          "timestamp": "2026-01-10T21:02:00Z",
+          "text": "Fresh batch in. 2500/g quality checked. Slots limited. DM fast ❄️🔌💊",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P016-3",
+          "timestamp": "2026-01-11T17:12:00Z",
+          "text": "Restock done. Premium grade. 2500/g only. Contact for menu ❄️🔌💊",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P016-4",
+          "timestamp": "2026-01-12T11:20:00Z",
+          "text": "New delivery area added. 2500/g. Min order 3g. DM now ❄️🔌💊",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P016-5",
+          "timestamp": "2026-01-13T03:26:00Z",
+          "text": "Late night slots open. 2500/g best quality. Fast delivery ❄️🔌💊",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P016-6",
+          "timestamp": "2026-01-13T22:12:00Z",
+          "text": "Available all night. 2500/g ice top grade. Crypto payment ❄️🔌💊",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P016-7",
+          "timestamp": "2026-01-14T15:15:00Z",
+          "text": "Stock confirmed fresh. 2500/g. DM for pickup details ❄️🔌💊",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P016-8",
+          "timestamp": "2026-01-15T10:28:00Z",
+          "text": "Running low. 2500/g last batch tonight. DM quick ❄️🔌💊",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-017",
+      "platform": "telegram",
+      "username": "night_vendor_b",
+      "display_name": "Night Vendor B",
+      "bio": "Night service. Crypto only. 🌙",
+      "followers": 280,
+      "phone": "+91 99999 00009",
+      "wallet_addresses": [
+        "0x14a00e55fd293d743eef57c88cfedbd942501b74"
+      ],
+      "posts": [
+        {
+          "id": "P017-1",
+          "timestamp": "2026-01-10T05:40:00Z",
+          "text": "Active now. Ice 2500/g min 3g. Crypto payment. DM address ❄️🔌💊",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P017-2",
+          "timestamp": "2026-01-10T23:29:00Z",
+          "text": "New supply in. 2500/g premium only. DM for delivery slot ❄️🔌💊",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P017-3",
+          "timestamp": "2026-01-11T16:08:00Z",
+          "text": "Menu: ice 2500/g. All items available. Contact for full list ❄️🔌💊",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P017-4",
+          "timestamp": "2026-01-12T10:03:00Z",
+          "text": "Night delivery active. 2500/g. Min 3g order. Message now ❄️🔌💊",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P017-5",
+          "timestamp": "2026-01-13T05:15:00Z",
+          "text": "Stock just arrived. 2500/g checked quality. DM to order ❄️🔌💊",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P017-6",
+          "timestamp": "2026-01-14T00:37:00Z",
+          "text": "Late night availability. 2500/g ice. Crypto upfront. DM ❄️🔌💊",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P017-7",
+          "timestamp": "2026-01-14T16:32:00Z",
+          "text": "Open all night. 2500/g top batch. Payment crypto only ❄️🔌💊",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P017-8",
+          "timestamp": "2026-01-15T11:37:00Z",
+          "text": "Last slots tonight. 2500/g. Hurry. DM for location ❄️🔌💊",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-018",
+      "platform": "instagram",
+      "username": "east_ops_1",
+      "display_name": "East Ops 1",
+      "bio": "East India ops. DM only.",
+      "followers": 450,
+      "phone": "+91 99999 00010",
+      "wallet_addresses": [
+        "0x1cfd393273f586dfd3fbd5c3bea89389f2c9c362"
+      ],
+      "posts": [
+        {
+          "id": "P018-1",
+          "timestamp": "2026-02-05T04:15:00Z",
+          "text": "Stock available. Rates: 2200/g ice, 700/g green. Inbox for order 🌿❄️🍄",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P018-2",
+          "timestamp": "2026-02-07T03:45:00Z",
+          "text": "Batch confirmed. 2200/g. Inbox me before 6am for today slot 🌿❄️🍄",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P018-3",
+          "timestamp": "2026-02-09T05:00:00Z",
+          "text": "East India delivery. 2200/g. Inbox your location. Crypto only 🌿❄️🍄",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P018-4",
+          "timestamp": "2026-02-11T04:30:00Z",
+          "text": "New area covered. 2200/g same rate. Inbox for confirmation 🌿❄️🍄",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P018-5",
+          "timestamp": "2026-02-13T03:30:00Z",
+          "text": "Restock complete. 2200/g ice quality. Inbox to order fast 🌿❄️🍄",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P018-6",
+          "timestamp": "2026-02-15T04:00:00Z",
+          "text": "Limited slots. 2200/g. Inbox now. Crypto upfront required 🌿❄️🍄",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P018-7",
+          "timestamp": "2026-02-17T05:15:00Z",
+          "text": "Available tonight. 2200/g premium. Inbox for menu details 🌿❄️🍄",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-019",
+      "platform": "twitter",
+      "username": "east_ops_2",
+      "display_name": "East Ops 2",
+      "bio": "Backup account. Inbox.",
+      "followers": 160,
+      "phone": "+91 99999 00011",
+      "wallet_addresses": [
+        "0x8aaa566cd4bd73307cadd1398b418888da17a898"
+      ],
+      "posts": [
+        {
+          "id": "P019-1",
+          "timestamp": "2026-02-06T04:00:00Z",
+          "text": "Supply active. 2200/g ice available. Inbox for ordering 🌿❄️🍄",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P019-2",
+          "timestamp": "2026-02-08T03:30:00Z",
+          "text": "Fresh stock in. 2200/g. Inbox me fast. Limited qty 🌿❄️🍄",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P019-3",
+          "timestamp": "2026-02-10T04:45:00Z",
+          "text": "2200/g confirmed rate. East delivery. Inbox your area 🌿❄️🍄",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P019-4",
+          "timestamp": "2026-02-12T03:00:00Z",
+          "text": "All items available. 2200/g ice. Inbox for list 🌿❄️🍄",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P019-5",
+          "timestamp": "2026-02-14T05:30:00Z",
+          "text": "Back online. 2200/g. Inbox only. Crypto payment 🌿❄️🍄",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P019-6",
+          "timestamp": "2026-02-16T04:15:00Z",
+          "text": "Slots open. 2200/g price fixed. Inbox to confirm 🌿❄️🍄",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P019-7",
+          "timestamp": "2026-02-18T03:45:00Z",
+          "text": "Last batch tonight. 2200/g. Inbox quick. Going fast 🌿❄️🍄",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-020",
+      "platform": "telegram",
+      "username": "auto_promo_bot1",
+      "display_name": "AutoPromo1",
+      "bio": "",
+      "followers": 90,
+      "phone": null,
+      "wallet_addresses": [
+        "0x41066bd382f67522ffc0fac603a0ae100378da6c"
+      ],
+      "posts": [
+        {
+          "id": "P020-1",
+          "timestamp": "2026-01-10T08:00:00Z",
+          "text": "Premium supply available. DM @shadow_dealer_ig for orders. Best rates. ❄️🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P020-2",
+          "timestamp": "2026-01-10T09:00:00Z",
+          "text": "Premium supply available. DM @shadow_dealer_ig for orders. Best rates. ❄️🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P020-3",
+          "timestamp": "2026-01-10T10:00:00Z",
+          "text": "Premium supply available. DM @shadow_dealer_ig for orders. Best rates. ❄️🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P020-4",
+          "timestamp": "2026-01-10T11:00:00Z",
+          "text": "Premium supply available. DM @shadow_dealer_ig for orders. Best rates. ❄️🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P020-5",
+          "timestamp": "2026-01-10T12:00:00Z",
+          "text": "Premium supply available. DM @shadow_dealer_ig for orders. Best rates. ❄️🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P020-6",
+          "timestamp": "2026-01-10T13:00:00Z",
+          "text": "Premium supply available. DM @shadow_dealer_ig for orders. Best rates. ❄️🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P020-7",
+          "timestamp": "2026-01-10T14:00:00Z",
+          "text": "Premium supply available. DM @shadow_dealer_ig for orders. Best rates. ❄️🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P020-8",
+          "timestamp": "2026-01-10T15:00:00Z",
+          "text": "Premium supply available. DM @shadow_dealer_ig for orders. Best rates. ❄️🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P020-9",
+          "timestamp": "2026-01-10T16:00:00Z",
+          "text": "Premium supply available. DM @shadow_dealer_ig for orders. Best rates. ❄️🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P020-10",
+          "timestamp": "2026-01-10T17:00:00Z",
+          "text": "Premium supply available. DM @shadow_dealer_ig for orders. Best rates. ❄️🔌",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-021",
+      "platform": "instagram",
+      "username": "spam_account_21",
+      "display_name": "SpamAcct21",
+      "bio": "",
+      "followers": 45,
+      "phone": null,
+      "wallet_addresses": [
+        "0xea38faea74aa6a6ccd1b46886bfc75dfe746b3e3"
+      ],
+      "posts": [
+        {
+          "id": "P021-1",
+          "timestamp": "2026-01-15T14:00:00Z",
+          "text": "Fresh batch in. 2500/g premium ice. DM now. Crypto only. ❄️💎🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P021-2",
+          "timestamp": "2026-01-15T16:00:00Z",
+          "text": "Fresh batch in. 2500/g premium ice. DM now. Crypto only. ❄️💎🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P021-3",
+          "timestamp": "2026-01-15T18:00:00Z",
+          "text": "Fresh batch in. 2500/g premium ice. DM now. Crypto only. ❄️💎🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P021-4",
+          "timestamp": "2026-01-15T20:00:00Z",
+          "text": "Fresh batch in. 2500/g premium ice. DM now. Crypto only. ❄️💎🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P021-5",
+          "timestamp": "2026-01-15T22:00:00Z",
+          "text": "Fresh batch in. 2500/g premium ice. DM now. Crypto only. ❄️💎🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P021-6",
+          "timestamp": "2026-01-16T00:00:00Z",
+          "text": "Fresh batch in. 2500/g premium ice. DM now. Crypto only. ❄️💎🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P021-7",
+          "timestamp": "2026-01-16T02:00:00Z",
+          "text": "Fresh batch in. 2500/g premium ice. DM now. Crypto only. ❄️💎🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P021-8",
+          "timestamp": "2026-01-16T04:00:00Z",
+          "text": "Fresh batch in. 2500/g premium ice. DM now. Crypto only. ❄️💎🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P021-9",
+          "timestamp": "2026-01-16T06:00:00Z",
+          "text": "Fresh batch in. 2500/g premium ice. DM now. Crypto only. ❄️💎🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P021-10",
+          "timestamp": "2026-01-16T08:00:00Z",
+          "text": "Fresh batch in. 2500/g premium ice. DM now. Crypto only. ❄️💎🔌",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-022",
+      "platform": "twitter",
+      "username": "promo_bot_22",
+      "display_name": "PromoBot22",
+      "bio": "Promo",
+      "followers": 30,
+      "phone": null,
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "P022-1",
+          "timestamp": "2026-02-01T06:00:00Z",
+          "text": "Contact @vmumbai_tg for Mumbai orders. Best prices. Fast delivery.",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P022-2",
+          "timestamp": "2026-02-01T06:30:00Z",
+          "text": "Contact @vmumbai_tg for Mumbai orders. Best prices. Fast delivery.",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P022-3",
+          "timestamp": "2026-02-01T07:00:00Z",
+          "text": "Contact @vmumbai_tg for Mumbai orders. Best prices. Fast delivery.",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P022-4",
+          "timestamp": "2026-02-01T07:30:00Z",
+          "text": "Contact @vmumbai_tg for Mumbai orders. Best prices. Fast delivery.",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P022-5",
+          "timestamp": "2026-02-01T08:00:00Z",
+          "text": "Contact @vmumbai_tg for Mumbai orders. Best prices. Fast delivery.",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P022-6",
+          "timestamp": "2026-02-01T08:30:00Z",
+          "text": "Contact @vmumbai_tg for Mumbai orders. Best prices. Fast delivery.",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P022-7",
+          "timestamp": "2026-02-01T09:00:00Z",
+          "text": "Contact @vmumbai_tg for Mumbai orders. Best prices. Fast delivery.",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P022-8",
+          "timestamp": "2026-02-01T09:30:00Z",
+          "text": "Contact @vmumbai_tg for Mumbai orders. Best prices. Fast delivery.",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-023",
+      "platform": "instagram",
+      "username": "network_promoter_23",
+      "display_name": "Network Promo 23",
+      "bio": "Connecting buyers and sellers.",
+      "followers": 2100,
+      "phone": "+91 99999 00012",
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "P023-1",
+          "timestamp": "2026-01-05T10:00:00Z",
+          "text": "Check out @shadow_dealer_ig for best rates in town. Verified supplier 📢",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P023-2",
+          "timestamp": "2026-01-10T14:30:00Z",
+          "text": "For Mumbai orders hit up @vendor_mumbai. Trusted source. DM them 📢",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P023-3",
+          "timestamp": "2026-01-15T11:00:00Z",
+          "text": "Delhi NCR? @delhi_plug is your guy. Fast and reliable 📢",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P023-4",
+          "timestamp": "2026-01-20T09:30:00Z",
+          "text": "BLR buyers: @bengaluru_ice is top quality. Check them out 📢",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P023-5",
+          "timestamp": "2026-01-25T15:00:00Z",
+          "text": "Hyderabad: @hydro_plug_hyd is active and trusted. Verified ✅",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P023-6",
+          "timestamp": "2026-01-30T10:00:00Z",
+          "text": "New to the market? Start with @northern_supply for wholesale 📢",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-024",
+      "platform": "telegram",
+      "username": "refer_network_24",
+      "display_name": "Refer Network",
+      "bio": "Referral network. Trusted contacts.",
+      "followers": 870,
+      "phone": "+91 99999 00012",
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "P024-1",
+          "timestamp": "2026-02-03T10:00:00Z",
+          "text": "Refer clients: @shad0w_official for north, @vmumbai_tg south. Both verified 📢",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P024-2",
+          "timestamp": "2026-02-08T14:00:00Z",
+          "text": "For large wholesale only contact @northern_supply. Min 50g 📢",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P024-3",
+          "timestamp": "2026-02-13T11:30:00Z",
+          "text": "Runners network: @shadow_runner_ig handles logistics 📢",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P024-4",
+          "timestamp": "2026-02-18T09:00:00Z",
+          "text": "BLR ops via @blr_ice_tg. Fastest response time 📢",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-025",
+      "platform": "instagram",
+      "username": "solo_vendor_25",
+      "display_name": "Solo Vendor 25",
+      "bio": "Independent. Local only.",
+      "followers": 310,
+      "phone": "+91 99999 00013",
+      "wallet_addresses": [
+        "0xf23a07bd6b6ebe78319dc35784875acfe4aaea32"
+      ],
+      "posts": [
+        {
+          "id": "P025-1",
+          "timestamp": "2026-02-01T12:00:00Z",
+          "text": "Local area only. Ice 2600/g. DM for zone check ❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P025-2",
+          "timestamp": "2026-02-06T10:30:00Z",
+          "text": "Stock in. Premium quality. 2600/g. Min 2g. Crypto 💎",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P025-3",
+          "timestamp": "2026-02-11T09:00:00Z",
+          "text": "Available evenings only. 2600/g. Message before 5pm ❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P025-4",
+          "timestamp": "2026-02-16T14:00:00Z",
+          "text": "New batch quality tested. 2600/g. DM for delivery slot 🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P025-5",
+          "timestamp": "2026-02-21T18:30:00Z",
+          "text": "Running low. Last 10g available. 2600/g. DM urgent ❄️💊",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-026",
+      "platform": "telegram",
+      "username": "pune_supply_26",
+      "display_name": "Pune Supply",
+      "bio": "Pune only. Local ops.",
+      "followers": 420,
+      "phone": "+91 99999 00014",
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "P026-1",
+          "timestamp": "2026-01-06T11:00:00Z",
+          "text": "Pune coverage: Kothrud, Hinjewadi, Wakad. DM zone ❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P026-2",
+          "timestamp": "2026-01-12T15:30:00Z",
+          "text": "Ice 2100/g green 650/g. Pune local only. DM 🌿❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P026-3",
+          "timestamp": "2026-01-18T10:00:00Z",
+          "text": "Weekend batch available. Pre-order by Thursday 💎",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P026-4",
+          "timestamp": "2026-01-24T08:30:00Z",
+          "text": "Restock done. All items available Pune. DM ❄️🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P026-5",
+          "timestamp": "2026-01-30T13:00:00Z",
+          "text": "New runner Hinjewadi area. Faster drops. DM 📍",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-027",
+      "platform": "twitter",
+      "username": "kolkata_ops_27",
+      "display_name": "Kolkata Ops",
+      "bio": "KOL supply. DM.",
+      "followers": 190,
+      "phone": "+91 99999 00015",
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "P027-1",
+          "timestamp": "2026-02-02T13:00:00Z",
+          "text": "Kolkata supply active. Ice + green available. DM ❄️🌿",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P027-2",
+          "timestamp": "2026-02-08T11:30:00Z",
+          "text": "KOL batch confirmed. 1900/g ice. Quality checked ❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P027-3",
+          "timestamp": "2026-02-14T09:00:00Z",
+          "text": "Salt Lake, Park Street, Howrah covered. DM zone 📍",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P027-4",
+          "timestamp": "2026-02-20T15:00:00Z",
+          "text": "Weekend stock available. DM before Friday 6pm 🔌",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-028",
+      "platform": "instagram",
+      "username": "chennai_supply_28",
+      "display_name": "Chennai Supply",
+      "bio": "Chennai ops. Discreet.",
+      "followers": 540,
+      "phone": "+91 99999 00016",
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "P028-1",
+          "timestamp": "2026-01-08T10:00:00Z",
+          "text": "Chennai batch in. Ice 2000/g. DM for zones covered ❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P028-2",
+          "timestamp": "2026-01-14T14:00:00Z",
+          "text": "Anna Nagar, T Nagar, Adyar delivery. DM location ❄️📍",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P028-3",
+          "timestamp": "2026-01-20T11:30:00Z",
+          "text": "Green available 600/g. Ice 2000/g. Min 3g. DM 🌿❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P028-4",
+          "timestamp": "2026-01-26T16:00:00Z",
+          "text": "Restock this week. All items. Quality batch. DM 🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P028-5",
+          "timestamp": "2026-02-01T09:30:00Z",
+          "text": "Crypto only payments. ETH preferred. DM for wallet 💎",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-029",
+      "platform": "telegram",
+      "username": "ahmedabad_ops_29",
+      "display_name": "Ahmedabad Ops",
+      "bio": "AMD supply. Local.",
+      "followers": 230,
+      "phone": "+91 99999 00017",
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "P029-1",
+          "timestamp": "2026-02-04T12:00:00Z",
+          "text": "AMD batch confirmed. Ice 1800/g. DM to order ❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P029-2",
+          "timestamp": "2026-02-10T10:30:00Z",
+          "text": "SG Highway, Satellite, Navrangpura. DM zone ❄️📍",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P029-3",
+          "timestamp": "2026-02-16T15:00:00Z",
+          "text": "Green added to menu. 550/g. DM for order 🌿",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P029-4",
+          "timestamp": "2026-02-22T09:00:00Z",
+          "text": "Restock done. DM for current rates 🔌",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-030",
+      "platform": "instagram",
+      "username": "runner_network_30",
+      "display_name": "Runner Net 30",
+      "bio": "Logistics. All cities.",
+      "followers": 160,
+      "phone": "+91 99999 00018",
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "P030-1",
+          "timestamp": "2026-01-09T08:00:00Z",
+          "text": "Drop done in BLR. Next drop Delhi tomorrow. Reliable service 📍",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P030-2",
+          "timestamp": "2026-01-15T12:00:00Z",
+          "text": "Working with @bengaluru_ice and @delhi_plug. Trusted runner 📢",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P030-3",
+          "timestamp": "2026-01-21T10:30:00Z",
+          "text": "Pickup slot confirmed. Meet point arranged. On time always 📍",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P030-4",
+          "timestamp": "2026-01-27T14:00:00Z",
+          "text": "Multi-city runner. BLR-HYD-MUM corridor active. DM 📍",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P030-5",
+          "timestamp": "2026-02-02T09:30:00Z",
+          "text": "Handoff successful. Payment received. Next drop scheduled 🔌",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-031",
+      "platform": "telegram",
+      "username": "logistics_ops_31",
+      "display_name": "Logistics 31",
+      "bio": "Nationwide runner.",
+      "followers": 120,
+      "phone": "+91 99999 00018",
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "P031-1",
+          "timestamp": "2026-02-01T11:00:00Z",
+          "text": "Logistics active. Pickup and drop nationwide. DM for route 📍",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P031-2",
+          "timestamp": "2026-02-07T09:00:00Z",
+          "text": "Working with @hyderabad_ops for HYD deliveries. Trusted 📢",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P031-3",
+          "timestamp": "2026-02-13T14:00:00Z",
+          "text": "New delivery route: Pune-BLR. 48hr transit. DM 📍",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P031-4",
+          "timestamp": "2026-02-19T10:30:00Z",
+          "text": "Handoff confirmed. Package delivered. Clean operation 🔌",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-032",
+      "platform": "instagram",
+      "username": "fitness_guy_32",
+      "display_name": "Fitness Guy",
+      "bio": "Gym. Nutrition. Lifestyle.",
+      "followers": 5400,
+      "phone": null,
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "P032-1",
+          "timestamp": "2026-01-05T07:00:00Z",
+          "text": "Protein powder batch just arrived. 2500/kg bulk buy from supplier 💪",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P032-2",
+          "timestamp": "2026-01-10T08:30:00Z",
+          "text": "Green smoothie recipe: spinach 🌿 banana mango. DM for macro count",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P032-3",
+          "timestamp": "2026-01-15T07:30:00Z",
+          "text": "New supplement stack dropped. DM me for honest review 💪",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P032-4",
+          "timestamp": "2026-01-20T08:00:00Z",
+          "text": "Whey protein 2500 for 5kg. DM for supplier link. Best price",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P032-5",
+          "timestamp": "2026-01-25T07:15:00Z",
+          "text": "Fresh produce haul. Green veggies only this week. Eating clean 🌱",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-033",
+      "platform": "twitter",
+      "username": "crypto_trader_33",
+      "display_name": "Crypto Trader",
+      "bio": "DeFi. Trading. Blockchain.",
+      "followers": 3200,
+      "phone": null,
+      "wallet_addresses": [
+        "0xb8ee1fc7e84bb5f40aefa8208d05bb6c318d5952"
+      ],
+      "posts": [
+        {
+          "id": "P033-1",
+          "timestamp": "2026-01-08T09:00:00Z",
+          "text": "ETH holding strong. DM if you want my wallet setup guide 💎",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P033-2",
+          "timestamp": "2026-01-14T11:30:00Z",
+          "text": "New batch of altcoins in portfolio. DM for analysis 📊",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P033-3",
+          "timestamp": "2026-01-20T10:00:00Z",
+          "text": "Crypto payments accepted for consultancy. DM rates 💎",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P033-4",
+          "timestamp": "2026-01-26T08:30:00Z",
+          "text": "Market update: ice cold out there lol. Hodl strong ❄️📊",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-034",
+      "platform": "instagram",
+      "username": "travel_blogger_34",
+      "display_name": "Travel Blogger",
+      "bio": "Wanderlust. Explore. Share.",
+      "followers": 12000,
+      "phone": null,
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "P034-1",
+          "timestamp": "2026-01-06T10:00:00Z",
+          "text": "Snow capped peaks of Himachal. Fresh mountain air ❄️🌿🍃 Nature is healing",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P034-2",
+          "timestamp": "2026-01-12T09:30:00Z",
+          "text": "Green forests of Kerala 🌿 DM for itinerary. Budget 2500 for 5 days",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P034-3",
+          "timestamp": "2026-01-18T08:00:00Z",
+          "text": "Mushroom trail in Coorg 🍄 Best experience. DM for guide contact",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P034-4",
+          "timestamp": "2026-01-24T10:30:00Z",
+          "text": "Weekend batch of treks planned. DM to join the group 🌱",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-035",
+      "platform": "telegram",
+      "username": "chat_operator_alpha",
+      "display_name": "Alpha Ops",
+      "bio": "Alpha channel.",
+      "followers": 600,
+      "phone": "+91 99999 00019",
+      "wallet_addresses": [
+        "0x471fa81a73baeff2ba773aec5c74e842d0641182"
+      ],
+      "posts": [
+        {
+          "id": "P035-1",
+          "timestamp": "2026-03-01T10:00:00Z",
+          "text": "Supply confirmed. Payment to 0x471fa81a73baeff2ba773aec5c74e842d0641182 only. DM ❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P035-2",
+          "timestamp": "2026-03-05T14:30:00Z",
+          "text": "Batch in. Quality verified. 2400/g. DM for order slot 🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P035-3",
+          "timestamp": "2026-03-10T11:00:00Z",
+          "text": "Channel active. New menu this week. DM for rates ❄️💎",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P035-4",
+          "timestamp": "2026-03-15T09:30:00Z",
+          "text": "Orders open now. Fast delivery guaranteed. Crypto only 💊",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P035-5",
+          "timestamp": "2026-03-20T15:00:00Z",
+          "text": "Stock limited. DM fast. Premium batch 2400/g ❄️",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-036",
+      "platform": "telegram",
+      "username": "chat_operator_beta",
+      "display_name": "Beta Ops",
+      "bio": "Beta distribution channel.",
+      "followers": 380,
+      "phone": "+91 99999 00020",
+      "wallet_addresses": [
+        "0x0de70e2383bf845efef314ed9ac5568bd48bb426"
+      ],
+      "posts": [
+        {
+          "id": "P036-1",
+          "timestamp": "2026-03-02T12:00:00Z",
+          "text": "Wallet: 0x0de70e2383bf845efef314ed9ac5568bd48bb426 for all payments. DM to order ❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P036-2",
+          "timestamp": "2026-03-07T10:00:00Z",
+          "text": "Beta channel for bulk only. Min 20g. DM rates ❄️💎",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P036-3",
+          "timestamp": "2026-03-12T14:00:00Z",
+          "text": "Supply ready. Quality batch. DM for delivery estimate 🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P036-4",
+          "timestamp": "2026-03-17T11:30:00Z",
+          "text": "Restock done. DM for updated menu and rates ❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P036-5",
+          "timestamp": "2026-03-22T09:00:00Z",
+          "text": "Alpha and Beta coordinating. Refer to @chat_operator_alpha 📢",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-037",
+      "platform": "telegram",
+      "username": "logistics_courier_37",
+      "display_name": "Courier 37",
+      "bio": "Courier ops.",
+      "followers": 95,
+      "phone": "+91 99999 00019",
+      "wallet_addresses": [],
+      "posts": [
+        {
+          "id": "P037-1",
+          "timestamp": "2026-02-05T08:00:00Z",
+          "text": "Vehicle MH02AB1234 active today. Drop zone west. DM 📍",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P037-2",
+          "timestamp": "2026-02-10T09:30:00Z",
+          "text": "New vehicle KA03CD5678. South BLR coverage. DM 📍",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P037-3",
+          "timestamp": "2026-02-15T10:00:00Z",
+          "text": "Contact via: +91 99999 00019. Courier active 📍",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P037-4",
+          "timestamp": "2026-02-20T11:00:00Z",
+          "text": "Replacement device active. IMEI: 490154203237518. New number 📱",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P037-5",
+          "timestamp": "2026-02-25T08:30:00Z",
+          "text": "Second vehicle DL01EF9012 added. Delhi coverage expanded 📍",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    },
+    {
+      "id": "PROF-038",
+      "platform": "instagram",
+      "username": "supply_aggregator_38",
+      "display_name": "Supply Agg 38",
+      "bio": "Aggregator. Multiple sources.",
+      "followers": 1200,
+      "phone": "+91 99999 00020",
+      "wallet_addresses": [
+        "0x54e3c85ccb633ad99839d5fefeef2497c2d0ca53"
+      ],
+      "posts": [
+        {
+          "id": "P038-1",
+          "timestamp": "2026-03-01T10:00:00Z",
+          "text": "Aggregating best suppliers. @shadow_dealer_ig @vendor_mumbai @delhi_plug 📢",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P038-2",
+          "timestamp": "2026-03-05T14:00:00Z",
+          "text": "Network update. New suppliers onboarded. DM for vetted contacts ❄️",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P038-3",
+          "timestamp": "2026-03-10T11:30:00Z",
+          "text": "Bulk buyers only. Min 100g. Multi-city delivery. DM 💎",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P038-4",
+          "timestamp": "2026-03-15T09:00:00Z",
+          "text": "Quality assured. All suppliers verified. Reach out 🔌",
+          "media_type": "text",
+          "engagement": {}
+        },
+        {
+          "id": "P038-5",
+          "timestamp": "2026-03-20T15:30:00Z",
+          "text": "Check out @bengaluru_ice and @hyderabad_ops. Both trusted 📢",
+          "media_type": "text",
+          "engagement": {}
+        }
+      ],
+      "data_source": "synthetic"
+    }
+  ]
+}

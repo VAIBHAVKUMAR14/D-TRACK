@@ -519,10 +519,9 @@ if status:
 
 
 # ── Tabs ─────────────────────────────────────────────────────────────────────
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "🕸️ Shadow-Graph",
     "🏆 Risk Leaderboard",
-    "🧪 NLP Inspector",
     "🔍 Identity Deep-Dive",
     "📥 Add Custom Data",
     "🕵️ Burner Leads",
@@ -597,7 +596,7 @@ with tab2:
             score = entry["risk_score"]
             level = entry["risk_level"]
             color = risk_color(score)
-            usernames = ", ".join(entry.get("primary_usernames", []))
+            usernames = html_lib.escape(", ".join(entry.get("primary_usernames", [])))
             platforms = entry.get("platforms", [])
             pills_html = " ".join(platform_pill(p) for p in platforms)
             bd = entry.get("score_breakdown", {})
@@ -644,102 +643,9 @@ with tab2:
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# TAB 3: NLP Inspector
+# TAB 3: Identity Deep-Dive
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 with tab3:
-    st.markdown('<div class="section-title">🧪 NLP Intent Inspector</div>', unsafe_allow_html=True)
-    st.markdown('<div class="section-sub">Test any message against the Slang-to-Signal semantic engine in real-time</div>', unsafe_allow_html=True)
-
-    test_text = st.text_area("Enter message to analyze:", height=110,
-        placeholder="e.g. ❄️ Fresh batch arrived! Premium quality, 2500/g. DM for full menu 🔌", key="nlp_input")
-
-    col_b, _ = st.columns([1, 3])
-    with col_b:
-        run_nlp = st.button("🔍 Analyze Intent", type="primary", use_container_width=True)
-
-    if run_nlp and test_text:
-        with st.spinner("Processing..."):
-            result = api_call("/api/analyze", method="POST", data={"text": test_text})
-
-        if result:
-            score = result.get("intent_score", 0)
-            flagged = result.get("flagged", False)
-            color = risk_color(score * 100)
-            status_txt = "⚠️ FLAGGED — SUSPICIOUS" if flagged else "✅ CLEAN — NO THREAT"
-            status_bg = "rgba(239,68,68,0.08)" if flagged else "rgba(34,197,94,0.08)"
-            emoji_ok = "✅" if result.get("has_drug_emojis") else "—"
-            price_ok = "✅" if result.get("has_price_pattern") else "—"
-
-            r1, r2 = st.columns([1, 2])
-            with r1:
-                st.markdown(f"""
-                <div class="nlp-result-card">
-                    <div style="font-size:2.5rem;">{'🚨' if flagged else '✅'}</div>
-                    <div class="nlp-big-score" style="color:{color};">{score:.0%}</div>
-                    <div style="font-size:0.8rem; color:#64748b; margin-bottom:0.8rem;">Intent Score</div>
-                    <div style="background:{status_bg}; border-radius:10px; padding:8px 16px;">
-                        <span style="font-weight:700; font-size:0.85rem; color:{color};">{status_txt}</span>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-            with r2:
-                st.markdown(f"""
-                <div class="nlp-detail-grid">
-                    <div class="nlp-detail-item">
-                        <div class="label">Drug Emojis</div>
-                        <div class="value">{emoji_ok} {'Detected' if result.get('has_drug_emojis') else 'None found'}</div>
-                    </div>
-                    <div class="nlp-detail-item">
-                        <div class="label">Price Patterns</div>
-                        <div class="value">{price_ok} {'Detected' if result.get('has_price_pattern') else 'None found'}</div>
-                    </div>
-                    <div class="nlp-detail-item">
-                        <div class="label">Emoji Boost</div>
-                        <div class="value">+{result.get('emoji_boost',0):.2f}</div>
-                    </div>
-                    <div class="nlp-detail-item">
-                        <div class="label">Price Boost</div>
-                        <div class="value">+{result.get('price_boost',0):.2f}</div>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-
-                if result.get("matched_anchor"):
-                    st.markdown(f"""
-                    <div style="margin-top:16px; background:rgba(99,102,241,0.06); border-radius:12px; padding:14px 18px; border-left:3px solid #818cf8;">
-                        <div style="font-size:0.72rem; color:#818cf8; text-transform:uppercase; font-weight:700; letter-spacing:0.08em; margin-bottom:6px;">
-                            Closest Anchor Sentence
-                        </div>
-                        <div style="color:#cbd5e1; font-style:italic; font-size:0.9rem;">
-                            "{result['matched_anchor']}"
-                        </div>
-                        <div style="color:#64748b; font-size:0.8rem; margin-top:6px;">
-                            Cosine Similarity: <b>{result.get('anchor_similarity',0):.4f}</b>
-                        </div>
-                    </div>
-                    """, unsafe_allow_html=True)
-
-    st.markdown("---")
-    st.markdown("##### 💡 Quick Examples")
-    ex_cols = st.columns(3)
-    examples = [
-        ("🚨 Coded — Explicit", "❄️ Fresh batch just landed! Premium quality, 2500/g. DM for full menu 🔌"),
-        ("🟡 Coded — Subtle", "Got the freshest supply in NCR 🔌 DM if you know what I mean"),
-        ("✅ Benign — Travel", "Snow capped peaks of Himachal 🏔️❄️ Nothing beats fresh mountain air"),
-    ]
-    for col, (label, text) in zip(ex_cols, examples):
-        with col:
-            st.markdown(f"**{label}**")
-            st.caption(text[:60] + "..." if len(text) > 60 else text)
-            if st.button(f"Try this →", key=f"ex_{label}"):
-                st.session_state["nlp_input"] = text
-                st.rerun()
-
-
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# TAB 4: Identity Deep-Dive
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-with tab4:
     st.markdown('<div class="section-title">🔍 Identity Deep-Dive</div>', unsafe_allow_html=True)
     st.markdown('<div class="section-sub">Select a unified identity to explore all linked profiles, activity, and risk breakdown</div>', unsafe_allow_html=True)
 
@@ -861,9 +767,9 @@ with tab4:
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# TAB 5: Add Custom Data
+# TAB 4: Add Custom Data
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-with tab5:
+with tab4:
     st.markdown('<div class="section-title">📥 Add Custom Data</div>', unsafe_allow_html=True)
     st.markdown('<div class="section-sub">Add your own profiles and posts to the analysis pipeline alongside mock data</div>', unsafe_allow_html=True)
 
@@ -1000,12 +906,64 @@ with tab5:
             except json.JSONDecodeError as e:
                 st.error(f"Invalid JSON: {e}")
 
+    # --- Chat Ingest Section ---
+    st.markdown("---")
+    st.markdown('<div class="section-title">💬 Chat Ingest</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-sub">Paste raw chat export or conversation below</div>', unsafe_allow_html=True)
+
+    chat_text = st.text_area("Paste Telegram/WhatsApp messages, or any chat logs...", height=300, key="chat_input")
+    platform_hint = st.selectbox("Platform / source hint (optional)", ["auto", "telegram", "whatsapp", "signal", "other"], key="chat_plat")
+
+    if st.button("🔍 Analyse Chat", type="primary", use_container_width=True, key="chat_submit"):
+        if not chat_text.strip():
+            st.error("Please paste some chat logs first.")
+        else:
+            with st.spinner("Analyzing chat for entities..."):
+                payload = {"text": chat_text, "platform_hint": platform_hint}
+                result = api_call("/api/ingest-chat", method="POST", data=payload, auth=True)
+                
+            if result and not is_error(result) and result.get("status") == "success":
+                st.success("✅ Chat processed!")
+                
+                c1, c2, c3 = st.columns(3)
+                c1.metric("Wallets Found", len(result["entities_found"]["wallets"]))
+                c2.metric("Phones Found", len(result["entities_found"]["phones"]))
+                c3.metric("Plates & IMEIs", len(result["entities_found"]["license_plates"]) + len(result["entities_found"]["imeis"]))
+                
+                st.markdown("#### Entities Extracted")
+                if result["entities_found"]["wallets"]:
+                    st.write(f"**Wallets:** {', '.join(result['entities_found']['wallets'])}")
+                if result["entities_found"]["phones"]:
+                    st.write(f"**Phones:** {', '.join(result['entities_found']['phones'])}")
+                if result["entities_found"]["license_plates"]:
+                    st.write(f"**License Plates:** {', '.join(result['entities_found']['license_plates'])}")
+                    
+                st.markdown(f"**Matched/Linked against Known Profiles:** {result['profiles_linked']}")
+                if result.get("matched_profiles"):
+                    st.caption(f"Profile IDs: {', '.join(result['matched_profiles'])}")
+                    
+                st.markdown(f"**New Shadow Profiles Created:** {result['profiles_created']}")
+                if result.get("new_profile_ids"):
+                    st.caption(f"New IDs: {', '.join(result['new_profile_ids'])}")
+                
+                if st.button("🔄 Re-run pipeline with new data"):
+                    with st.spinner("Triggering full intelligence pipeline..."):
+                        p_res = api_call("/api/ingest", method="POST", auth=True)
+                        if p_res and not is_error(p_res):
+                            st.success("Pipeline executed successfully!")
+                            time.sleep(1)
+                            st.rerun()
+                        else:
+                            st.error("Pipeline failed.")
+            else:
+                show_error(result)
+
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# TAB 6: Burner Leads
+# TAB 5: Burner Leads
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-with tab6:
+with tab5:
     st.markdown('<div class="section-title">🕵️ Probable Burner Accounts</div>', unsafe_allow_html=True)
     st.markdown('<div class="section-sub">Accounts with no hard linking signals but high stylometric similarity — analyst leads only, require manual verification</div>', unsafe_allow_html=True)
 

@@ -75,6 +75,8 @@ def normalize_phone(phone: str) -> str:
     # Normalize 0091... → +91...
     if digits.startswith('00'):
         digits = '+' + digits[2:]
+    elif digits.startswith('0'):
+        digits = '+' + digits[1:]
     return digits
 
 

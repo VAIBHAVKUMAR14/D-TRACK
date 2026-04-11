@@ -233,6 +233,10 @@ def find_probable_burner_matches(
     # Compare all cross-identity pairs
     probable_matches = []
     pids = list(style_features.keys())
+    
+    # Performance guard: Stylometry is O(n²). Limit to 200 accounts to prevent blocking.
+    if len(pids) > 200:
+        pids = pids[:200]
 
     for i in range(len(pids)):
         for j in range(i+1, len(pids)):
