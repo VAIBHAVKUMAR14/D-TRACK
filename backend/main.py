@@ -42,6 +42,7 @@ from backend.risk_scorer import (
 )
 from backend.stylometry import find_probable_burner_matches, extract_stylometric_features
 from backend.profiler import build_complete_profile
+from backend.chat_ingestor import ingest_all_chats
 
 
 # ── Configuration ────────────────────────────────────────────────────────────
@@ -132,7 +133,21 @@ def run_full_pipeline():
 
     _state["metadata"] = dataset.get("metadata", {})
     _state["profiles_raw"] = dataset.get("profiles", [])
-    print(f"\n[1/5] Loaded {len(_state['profiles_raw'])} profiles from {DATA_PATH.name}")
+    print(f"\n[1/7] Loaded {len(_state['profiles_raw'])} profiles from {DATA_PATH.name}")
+
+    # Step 1b: Ingest chat exports
+    print(f"\n[1b/7] Ingesting chat exports...")
+    chat_profiles = ingest_all_chats()
+    if chat_profiles:
+        # Merge chat profiles with social media profiles
+        # Deduplicate by ID to avoid re-ingesting on pipeline re-runs
+        existing_ids = {p['id'] for p in _state['profiles_raw']}
+        new_chat = [p for p in chat_profiles if p['id'] not in existing_ids]
+        _state['profiles_raw'].extend(new_chat)
+        print(f"       Added {len(new_chat)} chat-sourced profiles "
+              f"({len(chat_profiles) - len(new_chat)} already present)")
+    else:
+        print("       No chat data found — running on social posts only")
 
     # Step 2: NLP Analysis
     print(f"\n[2/5] Running NLP intent analysis...")
