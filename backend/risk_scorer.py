@@ -244,6 +244,12 @@ def get_risk_leaderboard(identities: list[dict]) -> list[dict]:
             "num_profiles": len(profiles),
             "has_wallet": len(identity.get("all_wallets", [])) > 0,
             "score_breakdown": identity.get("score_breakdown", {}),
+            "is_bot_network": any(
+                p.get("is_likely_bot", False) for p in profiles
+            ),
+            "bot_profile_count": sum(
+                1 for p in profiles if p.get("is_likely_bot", False)
+            ),
         })
 
     return leaderboard

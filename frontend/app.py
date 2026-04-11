@@ -551,7 +551,7 @@ with tab1:
 
         st.markdown("""
         **Legend:** &nbsp; 🔴 Critical &nbsp; 🟠 High &nbsp; 🟡 Medium &nbsp; 🟢 Low &nbsp; 💛 Wallet &nbsp; | &nbsp;
-        ●&thinsp;Account &nbsp; ◆&thinsp;Wallet
+        ● Human account &nbsp; ■ Bot account &nbsp; ◆ Wallet &nbsp; | &nbsp; ⚠️ Dashed border = bot flagged
         """)
 
         graph_html = api_call("/api/graph/html", auth=True)
@@ -603,12 +603,17 @@ with tab2:
             bd = entry.get("score_breakdown", {})
             rank_cls = "lb-rank-top" if entry["rank"] <= 3 else ""
 
+            bot_badge = ""
+            if entry.get("is_bot_network"):
+                bot_count = entry.get("bot_profile_count", 0)
+                bot_badge = f'<span style="background:rgba(245,158,11,0.15); color:#f59e0b; border:1px solid rgba(245,158,11,0.3); border-radius:8px; padding:2px 8px; font-size:0.7rem; font-weight:700; margin-left:6px;">⚠️ {bot_count} BOT</span>'
+
             st.markdown(f"""
             <div class="lb-row">
                 <div class="lb-rank {rank_cls}">#{entry['rank']}</div>
                 <div class="lb-info">
                     <h4>{entry['identity_id']}</h4>
-                    <div class="usernames">{usernames}</div>
+                    <div class="usernames">{usernames}{bot_badge}</div>
                     <div style="margin-top:4px;">{pills_html}</div>
                 </div>
                 <div class="lb-score-col">
@@ -825,6 +830,25 @@ with tab4:
                                     </span>
                                 </div>
                                 <div class="post-text">{html_lib.escape(post.get('text',''))}</div>
+                            </div>
+                            """, unsafe_allow_html=True)
+
+                        bot = profile.get("bot_assessment", {})
+                        if bot.get("is_likely_bot"):
+                            st.markdown(f"""
+                            <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.2);
+                                        border-radius:10px; padding:0.8rem 1.2rem; margin:8px 0;">
+                                <div style="color:#f59e0b; font-weight:700; font-size:0.85rem;">
+                                    ⚠️ BOT DETECTED — {bot.get('bot_probability', 0):.0%} confidence
+                                </div>
+                                <div style="color:#94a3b8; font-size:0.78rem; margin-top:4px;">
+                                    Recommendation: {bot.get('recommendation', 'tag_and_deprioritize')}
+                                </div>
+                                <div style="color:#64748b; font-size:0.75rem; margin-top:6px;">
+                                    Temporal signals: CV={bot.get('temporal_signals', {{}}).get('posting_regularity_cv', 'N/A')} ·
+                                    Burst ratio: {bot.get('temporal_signals', {{}}).get('burst_ratio', 'N/A')} ·
+                                    Duplicate ratio: {bot.get('content_signals', {{}}).get('duplicate_ratio', 'N/A')}
+                                </div>
                             </div>
                             """, unsafe_allow_html=True)
         else:

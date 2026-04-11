@@ -79,6 +79,8 @@ def build_shadow_graph(
                 identity_id=identity["identity_id"],
                 color=RISK_COLORS.get(risk_level, "#4CAF50"),
                 size=max(15, min(50, profile.get("followers", 0) // 100 + 15)),
+                is_likely_bot=profile.get("is_likely_bot", False),
+                bot_probability=profile.get("bot_assessment", {}).get("bot_probability", 0.0),
             )
 
     # ── Add wallet nodes ─────────────────────────────────────────────────
@@ -298,17 +300,30 @@ def generate_pyvis_html(G: nx.Graph, output_path: str = "shadow_graph.html") -> 
     # Add nodes
     for node_id, attrs in G.nodes(data=True):
         node_type = attrs.get("node_type", "account")
+        is_bot = attrs.get("is_likely_bot", False)
         color = attrs.get("color", "#4CAF50")
         size = attrs.get("size", 20)
         label = attrs.get("label", str(node_id))
 
-        # Shape based on type
-        shape = "dot" if node_type == "account" else "diamond"
+        # Bots get square shape instead of dot
+        if node_type == "account":
+            shape = "square" if is_bot else "dot"
+        else:
+            shape = "diamond"
+
+        # Bot label gets [BOT] prefix
+        display_label = f"[BOT] {label}" if is_bot else label
+
+        # Bot nodes get reduced opacity via border styling
+        border_color = "#666666" if is_bot else color
 
         # Tooltip
         if node_type == "account":
+            bot_line = ""
+            if is_bot:
+                bot_line = f"<br><b style='color:#f59e0b;'>⚠️ BOT DETECTED ({attrs.get('bot_probability', 0):.0%})</b>"
             title = (
-                f"<b>{attrs.get('display_name', label)}</b><br>"
+                f"<b>{attrs.get('display_name', label)}</b>{bot_line}<br>"
                 f"Username: {label}<br>"
                 f"Platform: {attrs.get('platform', 'N/A')}<br>"
                 f"Risk Score: {attrs.get('risk_score', 0):.0f}/100<br>"
@@ -326,12 +341,15 @@ def generate_pyvis_html(G: nx.Graph, output_path: str = "shadow_graph.html") -> 
 
         net.add_node(
             node_id,
-            label=label,
-            color=color,
+            label=display_label,
+            color={"background": color, "border": border_color},
             size=size,
             shape=shape,
             title=title,
-            borderWidth=2,
+            borderWidth=4 if is_bot else 2,
+            borderWidthSelected=6 if is_bot else 4,
+            # Dashed border effect via shapeProperties
+            shapeProperties={"borderDashes": [5, 5]} if is_bot else {},
         )
 
     # Add edges
