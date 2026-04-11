@@ -23,8 +23,8 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
     <aside className="w-60 bg-white lg:bg-transparent flex flex-col relative z-10 h-full border-r border-stone-200 lg:border-0">
       {/* Brand Header */}
       <div className="p-6 pb-0 relative z-10 flex items-center justify-between">
-        <h1 className="text-lg font-semibold text-stone-900">
-          🔍 D-TRACK
+        <h1 className="text-lg font-semibold text-stone-900 tracking-wider">
+          D-TRACK
         </h1>
         {/* Close button for mobile */}
         {onClose && (

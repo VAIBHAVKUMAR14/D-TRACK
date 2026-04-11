@@ -26,7 +26,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 # ── Page Config ──────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="D-TRACK | OSINT Intelligence Platform",
-    page_icon="🔍",
+    page_icon="D",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -520,11 +520,11 @@ if status:
 
 # ── Tabs ─────────────────────────────────────────────────────────────────────
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
-    "🕸️ Shadow-Graph",
-    "🏆 Risk Leaderboard",
-    "🔍 Identity Deep-Dive",
-    "📥 Add Custom Data",
-    "🕵️ Burner Leads",
+    "Shadow-Graph",
+    "Risk Leaderboard",
+    "Identity Deep-Dive",
+    "Add Custom Data",
+    "Burner Leads",
 ])
 
 

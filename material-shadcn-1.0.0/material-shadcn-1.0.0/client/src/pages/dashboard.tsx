@@ -68,13 +68,15 @@ export default function Dashboard() {
           {statCards.map((card) => {
             const Icon = card.icon;
             return (
-              <Card key={card.label} className="border border-stone-200">
+              <Card key={card.label} className="border border-stone-200 bg-white shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 rounded-xl">
                 <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-xs font-medium text-stone-500 uppercase tracking-wider">{card.label}</p>
-                    <Icon className={`h-4 w-4 ${card.color}`} />
+                  <div className="flex items-center justify-between mb-4">
+                    <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider">{card.label}</p>
+                    <div className={`p-2 rounded-full bg-opacity-10 bg-stone-100 ${card.color}`}>
+                      <Icon className={`h-5 w-5`} />
+                    </div>
                   </div>
-                  <p className="text-3xl font-bold text-stone-900">
+                  <p className="text-4xl font-extrabold text-stone-900 tracking-tight">
                     {typeof card.value === "number" ? card.value.toLocaleString() : card.value}
                   </p>
                 </CardContent>
@@ -87,29 +89,36 @@ export default function Dashboard() {
       {/* Quick stats row */}
       {stats && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card className="border border-stone-200">
-            <CardHeader className="pb-2"><CardTitle className="text-sm font-medium text-stone-600">Detection Rate</CardTitle></CardHeader>
+          <Card className="border border-stone-200 bg-gradient-to-br from-white to-stone-50 shadow-sm rounded-xl">
+            <CardHeader className="pb-2"><CardTitle className="text-sm font-semibold text-stone-500 uppercase tracking-wide">Detection Rate</CardTitle></CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold text-stone-900">
+              <p className="text-3xl font-extrabold text-stone-900">
                 {stats.total_posts > 0 ? ((stats.flagged_posts / stats.total_posts) * 100).toFixed(1) : 0}%
               </p>
-              <p className="text-xs text-stone-500 mt-1">{stats.flagged_posts} of {stats.total_posts} posts flagged</p>
+              <div className="w-full bg-stone-200 rounded-full h-1.5 mt-2 mb-1">
+                <div className="bg-red-500 h-1.5 rounded-full" style={{ width: `${stats.total_posts > 0 ? ((stats.flagged_posts / stats.total_posts) * 100) : 0}%` }}></div>
+              </div>
+              <p className="text-xs text-stone-500 font-medium">{stats.flagged_posts} of {stats.total_posts} posts flagged</p>
             </CardContent>
           </Card>
-          <Card className="border border-stone-200">
-            <CardHeader className="pb-2"><CardTitle className="text-sm font-medium text-stone-600">Identity Compression</CardTitle></CardHeader>
+          <Card className="border border-stone-200 bg-gradient-to-br from-white to-stone-50 shadow-sm rounded-xl">
+            <CardHeader className="pb-2"><CardTitle className="text-sm font-semibold text-stone-500 uppercase tracking-wide">Identity Compression</CardTitle></CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold text-stone-900">
+              <p className="text-3xl font-extrabold text-stone-900">
                 {stats.total_profiles > 0 ? ((1 - stats.unified_identities / stats.total_profiles) * 100).toFixed(0) : 0}%
               </p>
-              <p className="text-xs text-stone-500 mt-1">{stats.total_profiles} profiles → {stats.unified_identities} identities</p>
+              <div className="w-full bg-stone-200 rounded-full h-1.5 mt-2 mb-1">
+                <div className="bg-purple-500 h-1.5 rounded-full" style={{ width: `${stats.total_profiles > 0 ? ((1 - stats.unified_identities / stats.total_profiles) * 100) : 0}%` }}></div>
+              </div>
+              <p className="text-xs text-stone-500 font-medium">{stats.total_profiles} profiles → {stats.unified_identities} identities</p>
             </CardContent>
           </Card>
-          <Card className="border border-stone-200">
-            <CardHeader className="pb-2"><CardTitle className="text-sm font-medium text-stone-600">Organized Networks</CardTitle></CardHeader>
+          <Card className="border border-stone-200 bg-gradient-to-br from-white to-stone-50 shadow-sm rounded-xl">
+            <CardHeader className="pb-2"><CardTitle className="text-sm font-semibold text-stone-500 uppercase tracking-wide">Organized Networks</CardTitle></CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold text-stone-900">{stats.organized_networks}</p>
-              <p className="text-xs text-stone-500 mt-1">Networks with 3+ linked profiles</p>
+              <p className="text-3xl font-extrabold text-stone-900">{stats.organized_networks}</p>
+              <div className="w-full bg-stone-100 rounded-full h-1.5 mt-2 mb-1"></div>
+              <p className="text-xs text-stone-500 font-medium mt-1">Networks with 3+ linked profiles</p>
             </CardContent>
           </Card>
         </div>
