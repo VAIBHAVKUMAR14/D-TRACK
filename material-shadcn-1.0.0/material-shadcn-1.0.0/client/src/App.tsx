@@ -17,6 +17,7 @@ import NLPInspector from "@/pages/nlp";
 import IdentityDive from "@/pages/identity";
 import BurnerLeads from "@/pages/burner";
 import AddProfile from "@/pages/add-profile";
+import Pipeline from "@/pages/pipeline";
 import NotFound from "@/pages/not-found";
 
 function Layout({ children, title, description }: { children: React.ReactNode; title?: string; description?: string }) {
@@ -89,6 +90,7 @@ function Router() {
       <Route path="/identity" element={<Layout title="Identity Deep-Dive" description="Complete four-dimensional profile for each unified identity"><IdentityDive /></Layout>} />
       <Route path="/burner" element={<Layout title="Burner Leads" description="Probable burner accounts detected via stylometric fingerprinting"><BurnerLeads /></Layout>} />
       <Route path="/add" element={<Layout title="Add Profile" description="Inject custom profiles into the analysis pipeline"><AddProfile /></Layout>} />
+      <Route path="/pipeline" element={<Layout title="Tech Pipeline" description="Complete technical breakdown of the D-TRACK analysis engine"><Pipeline /></Layout>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

@@ -2,7 +2,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { 
   LayoutDashboard, Network, Trophy, FlaskConical, 
-  Search, UserX, PlusCircle, X
+  Search, UserX, PlusCircle, X, Cpu
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -14,6 +14,7 @@ const navItems = [
   { title: "Identity Dive",     href: "/identity",     icon: Search },
   { title: "Burner Leads",      href: "/burner",       icon: UserX },
   { title: "Add Profile",       href: "/add",          icon: PlusCircle },
+  { title: "Tech Pipeline",     href: "/pipeline",     icon: Cpu },
 ];
 
 export function Sidebar({ onClose }: { onClose?: () => void }) {

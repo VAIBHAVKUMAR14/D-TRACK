@@ -48,8 +48,10 @@ from backend.chat_ingestor import ingest_all_chats, extract_entities_from_text
 
 # ── Configuration ────────────────────────────────────────────────────────────
 
-# C2 — Configurable CORS origins (default: only Streamlit)
-ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:8501").split(",")
+# C2 — Configurable CORS origins (Streamlit + React)
+ALLOWED_ORIGINS = os.getenv(
+    "ALLOWED_ORIGINS", "http://localhost:8501,http://localhost:3000"
+).split(",")
 
 # C3 — API key authentication
 API_KEY = os.getenv("DTRACK_API_KEY", "changeme-replace-in-production")
@@ -206,7 +208,7 @@ def run_full_pipeline():
     burner_leads = find_probable_burner_matches(
         _state["profile_analyses"],
         _state["identities"],
-        threshold=0.65,
+        threshold=0.80,
     )
     _state["burner_leads"] = burner_leads
     print(f"       Found {len(burner_leads)} probable burner matches")
@@ -560,6 +562,212 @@ async def get_communities():
     return {
         "communities": community_groups,
         "total_communities": len(community_groups),
+    }
+
+
+@app.get("/api/pipeline-info")
+async def get_pipeline_info():
+    """Return comprehensive technical details about the D-TRACK pipeline.
+
+    Surfaces all the 'hidden' features for the hacakthon demo:
+    data sanitization, NLP architecture, identity resolution,
+    bot detection, stylometric features, and false positive safeguards.
+    """
+    await _ensure_loaded()
+
+    # Compute live metrics from state
+    profile_analyses = _state.get("profile_analyses", [])
+    identities = _state.get("identities", [])
+    profiles_raw = _state.get("profiles_raw", [])
+    burner_leads = _state.get("burner_leads", [])
+    graph = _state.get("graph")
+
+    # Identity compression
+    total_profiles = len(profile_analyses)
+    total_identities = len(identities)
+    compression_pct = round(
+        (1 - total_identities / max(total_profiles, 1)) * 100, 1
+    )
+
+    # Detection rate
+    total_posts = sum(pa["total_posts"] for pa in profile_analyses)
+    flagged_posts = sum(pa["flagged_posts"] for pa in profile_analyses)
+    detection_rate = round(flagged_posts / max(total_posts, 1) * 100, 1)
+
+    # Bot stats
+    bot_profiles = [
+        pa for pa in profile_analyses
+        if pa.get("bot_assessment", {}).get("is_likely_bot")
+    ]
+
+    # Platform breakdown
+    platform_counts = {}
+    for pa in profile_analyses:
+        p = pa.get("platform", "unknown")
+        platform_counts[p] = platform_counts.get(p, 0) + 1
+
+    # Wallet stats
+    all_wallets = set()
+    for identity in identities:
+        all_wallets.update(identity.get("all_wallets", []))
+    multi_profile_wallets = sum(
+        1 for i in identities
+        if len(i.get("profiles", [])) > 1 and len(i.get("all_wallets", [])) > 0
+    )
+
+    # Graph stats
+    graph_nodes = graph.number_of_nodes() if graph else 0
+    graph_edges = graph.number_of_edges() if graph else 0
+
+    return {
+        # === Section 1: Data Sanitization Pipeline ===
+        "data_sanitization": {
+            "title": "Data Sanitization Pipeline",
+            "stages": [
+                {
+                    "name": "NFKC Unicode Normalization",
+                    "description": "Converts Cyrillic lookalike chars to Latin. Defeats evasion like Cyrillic 'а' → Latin 'a'",
+                    "example": "Cyrillic 'а' (U+0430) → Latin 'a' (U+0061)",
+                },
+                {
+                    "name": "Control Character Stripping",
+                    "description": "Removes null bytes, invisible characters, and non-printable control chars",
+                    "example": "'\\x00hidden\\x7f' → 'hidden'",
+                },
+                {
+                    "name": "HTML Entity Escaping",
+                    "description": "Prevents XSS injection in the dashboard via html.escape()",
+                    "example": "<script>alert(1)</script> → &lt;script&gt;alert(1)&lt;/script&gt;",
+                },
+                {
+                    "name": "Phone Normalization",
+                    "description": "Normalizes +91, 0091, (91) formats to comparable canonical form",
+                    "example": "+91-98765-43210 → +919876543210",
+                },
+                {
+                    "name": "Wallet Address Normalization",
+                    "description": "ETH addresses lowercased for deterministic matching",
+                    "example": "0x4E2aF9b8... → 0x4e2af9b8...",
+                },
+                {
+                    "name": "NLP Pre-processing",
+                    "description": "URLs → [URL] token, emoji deduplication, whitespace collapse. Preserves semantic meaning.",
+                    "example": "❄️❄️❄️❄️ → ❄️ (prevents emoji boost stacking)",
+                },
+            ],
+            "hard_limits": {
+                "max_text_length": 2000,
+                "max_bio_length": 500,
+                "max_username_length": 100,
+            },
+        },
+
+        # === Section 2: NLP Engine Architecture ===
+        "nlp_engine": {
+            "title": "Slang-to-Signal NLP Engine",
+            "model": "sentence-transformers/all-MiniLM-L6-v2",
+            "model_type": "Sentence Transformer (384-dim embeddings)",
+            "method": "Cosine similarity against 10 anchor sentences",
+            "anchor_count": 10,
+            "intent_threshold": 0.4,
+            "boosts": [
+                {"name": "Drug Emoji Boost", "value": "+0.15", "condition": "Only if base score ≥ 0.25", "emojis": "❄️ 🍃 🍄 🔌 💊 💉 🌿 🌱 🧪 💎 🌈"},
+                {"name": "Price Pattern Boost", "value": "+0.1", "condition": "Matches patterns like 2500/g, $50, ₹3k"},
+                {"name": "Wallet Mention Boost", "value": "+0.05", "condition": "ETH/BTC/SOL address detected"},
+            ],
+            "total_posts_analyzed": total_posts,
+            "flagged_posts": flagged_posts,
+            "detection_rate_pct": detection_rate,
+        },
+
+        # === Section 3: Identity Resolution ===
+        "identity_resolution": {
+            "title": "Cross-Platform Identity Stitching",
+            "algorithm": "Union-Find (Disjoint Set Union)",
+            "primary_keys": [
+                {"name": "Crypto Wallet Address", "description": "If two accounts share an ETH/BTC wallet → same operator. Deterministic."},
+                {"name": "Phone Number", "description": "Same normalized phone across platforms → same person."},
+                {"name": "@Mention Cross-Reference", "description": "Flagged mentions between accounts → connected in graph."},
+            ],
+            "identity_id_method": "MD5 hash of sorted profile IDs (stable + reproducible)",
+            "total_profiles": total_profiles,
+            "unified_identities": total_identities,
+            "compression_pct": compression_pct,
+            "multi_profile_wallets": multi_profile_wallets,
+            "platform_breakdown": platform_counts,
+        },
+
+        # === Section 4: Bot Detection ===
+        "bot_detection": {
+            "title": "3-Signal Bot Detection",
+            "signals": [
+                {"name": "Temporal Regularity", "metric": "Posting interval CV (coefficient of variation)", "threshold": "CV < 0.3 = suspiciously regular"},
+                {"name": "Content Fingerprinting", "metric": "Jaccard similarity between posts", "threshold": "Duplicate ratio > 0.5 = repetitive content"},
+                {"name": "Metadata Anomalies", "metric": "Username patterns, follower ratios, account age", "threshold": "Multiple red flags = likely automated"},
+            ],
+            "bot_risk_discount": "30% risk score reduction for bot-flagged identities",
+            "total_bots_detected": len(bot_profiles),
+            "bot_profile_ids": [bp["profile_id"] for bp in bot_profiles],
+        },
+
+        # === Section 5: Stylometric Burner Detection ===
+        "burner_detection": {
+            "title": "6-Dimension Stylometric Fingerprinting",
+            "features": [
+                {"name": "Emoji Usage Patterns", "description": "Frequency + specific drug vs benign emoji overlap"},
+                {"name": "Price Quoting Style", "description": "Format: ₹2500/g vs 2.5k per gram vs $50 for 2g"},
+                {"name": "Activity Window", "description": "Peak posting hours — late night clustering reveals same timezone operator"},
+                {"name": "Verbosity", "description": "Average message length, punctuation density"},
+                {"name": "Vocabulary Richness", "description": "Type-token ratio of unique words"},
+                {"name": "Contact Vocabulary", "description": "'DM', 'HMU', 'ping me', 'reach out' patterns"},
+            ],
+            "similarity_threshold": 0.80,
+            "confidence_levels": {"high": "5-6 dimensions match", "medium": "3-4 dimensions match"},
+            "is_analyst_lead_only": True,
+            "total_leads": len(burner_leads),
+        },
+
+        # === Section 6: False Positive Safeguards ===
+        "false_positive_safeguards": {
+            "title": "False Positive Prevention",
+            "safeguards": [
+                {"name": "Intent Threshold 0.4", "description": "Must exceed 40% semantic similarity to be flagged. Tuned to reject benign matches."},
+                {"name": "Conditional Emoji Boost", "description": "Drug emoji boost only applies when base_score ≥ 0.25. '❄️ Snow day!' stays clean."},
+                {"name": "Bot Score Discount", "description": "30% risk reduction for bot-detected accounts. Prevents noise."},
+                {"name": "Burner = Analyst Lead Only", "description": "Stylometric matches are NEVER auto-merged. Always requires human verification."},
+                {"name": "Link Evidence Audit Trail", "description": "Every identity merge has documented evidence (shared wallet/phone) for analyst review."},
+            ],
+        },
+
+        # === Section 7: Graph & Risk Engine ===
+        "graph_engine": {
+            "title": "Shadow-Graph & Risk Engine",
+            "graph_library": "NetworkX",
+            "centrality_metrics": ["Degree", "Betweenness", "Eigenvector", "PageRank"],
+            "community_detection": "Louvain algorithm (python-louvain)",
+            "risk_formula": "40% centrality + 35% intent + 25% connections",
+            "visualization": "PyVis interactive HTML",
+            "total_nodes": graph_nodes,
+            "total_edges": graph_edges,
+        },
+
+        # === Section 8: Chat Ingestion ===
+        "chat_ingestion": {
+            "title": "Multi-Source Chat Ingestion",
+            "supported_formats": [
+                {"name": "Telegram JSON Export", "parser": "Native Python parser"},
+                {"name": "WhatsApp TXT Export", "parser": "Regex-based line parser"},
+                {"name": "C++ Ingestor CSV", "parser": "CSV fallback reader"},
+            ],
+            "entity_extraction": [
+                "ETH Wallet (0x...)",
+                "BTC Wallet (1.../3...)",
+                "Phone Numbers",
+                "IMEI (15-digit)",
+                "Indian License Plates",
+            ],
+            "status": "Ready — awaiting chat export files in data directory",
+        },
     }
 
 
