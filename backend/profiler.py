@@ -245,4 +245,9 @@ def build_complete_profile(
 
         # Link evidence — WHY this identity was formed
         'link_evidence': identity.get('link_evidence', []),
+        
+        # All underlying profiles
+        'profiles': identity.get('profiles', []),
+        # Expose all wallets as all_wallets to match frontend expectations
+        'all_wallets': identity.get('all_wallets', []),
     }
