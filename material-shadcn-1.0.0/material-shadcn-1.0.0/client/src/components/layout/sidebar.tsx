@@ -7,7 +7,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 const navItems = [
-  { title: "Overview",          href: "/",             icon: LayoutDashboard },
+  { title: "Overview",          href: "/dashboard",    icon: LayoutDashboard },
   { title: "Live Investigate",  href: "/investigate",  icon: Crosshair, badge: "LIVE" },
   { title: "Shadow Graph",      href: "/graph",        icon: Network },
   { title: "Identity Reveal",   href: "/identity",     icon: Search, badge: "KEY" },

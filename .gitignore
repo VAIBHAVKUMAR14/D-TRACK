@@ -1,5 +1,41 @@
+# Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+*.egg-info/
+*.egg
+dist/
+build/
+venv/
+.venv/
+env/
+
+# Node
+node_modules/
+dist/
+.cache/
+*.log
+npm-debug.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# D-TRACK specific
 crash.txt
+*.sqlite
+*.db

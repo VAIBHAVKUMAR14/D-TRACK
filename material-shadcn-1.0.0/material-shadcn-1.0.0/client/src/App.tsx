@@ -15,6 +15,7 @@ import BurnerLeads from "@/pages/burner";
 import AddProfile from "@/pages/add-profile";
 import Pipeline from "@/pages/pipeline";
 import Investigate from "@/pages/investigate";
+import Landing from "@/pages/landing";
 import NotFound from "@/pages/not-found";
 
 function Layout({ children, title, description }: { children: React.ReactNode; title?: string; description?: string }) {
@@ -74,7 +75,8 @@ function Layout({ children, title, description }: { children: React.ReactNode; t
 function Router() {
   return (
     <Routes>
-      <Route path="/" element={<Layout><Dashboard /></Layout>} />
+      <Route path="/" element={<Landing />} />
+      <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
       <Route path="/investigate" element={<Layout title="Live Investigation" description="Real-time intelligence pipeline — paste any text and watch it process"><Investigate /></Layout>} />
       <Route path="/graph" element={<Layout title="Shadow Graph" description="Interactive network of linked accounts and crypto wallets"><Graph /></Layout>} />
       <Route path="/leaderboard" element={<Layout title="Risk Leaderboard" description="Unified identities ranked by composite risk score"><Leaderboard /></Layout>} />

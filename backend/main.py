@@ -156,7 +156,7 @@ def run_full_pipeline():
         print("       No chat data found — running on social posts only")
 
     # Step 2: NLP Analysis
-    print(f"\n[2/5] Running NLP intent analysis...")
+    print(f"\n[2/7] Running NLP intent analysis...")
     profile_analyses = []
     for profile in _state["profiles_raw"]:
         analysis = analyze_profile(profile)
@@ -168,7 +168,7 @@ def run_full_pipeline():
     print(f"       Analyzed {total_posts} posts, {total_flagged} flagged as suspicious")
 
     # Step 3: Identity Resolution
-    print(f"\n[3/5] Resolving cross-platform identities...")
+    print(f"\n[3/7] Resolving cross-platform identities...")
     identities = resolve_identities(profile_analyses)
     cross_links = get_cross_platform_links(identities)
     promo_links = detect_promotion_links(profile_analyses)
@@ -176,7 +176,7 @@ def run_full_pipeline():
           f"{len(promo_links)} promotion links")
 
     # Step 4: Graph Construction
-    print(f"\n[4/5] Building shadow-graph...")
+    print(f"\n[4/7] Building shadow-graph...")
     graph = build_shadow_graph(identities, cross_links, promo_links)
     centrality_metrics = compute_centrality_metrics(graph)
     _state["graph"] = graph
@@ -569,7 +569,7 @@ async def get_communities():
 async def get_pipeline_info():
     """Return comprehensive technical details about the D-TRACK pipeline.
 
-    Surfaces all the 'hidden' features for the hacakthon demo:
+    Surfaces all the 'hidden' features for the platform demo:
     data sanitization, NLP architecture, identity resolution,
     bot detection, stylometric features, and false positive safeguards.
     """

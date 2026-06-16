@@ -480,8 +480,8 @@ with st.sidebar:
     st.markdown("""
     <div style="color:#475569; font-size:0.7rem; text-align:center; line-height:1.6;">
         <b>D-TRACK v2.0</b><br>
-        Hackathon MVP Build<br>
-        Mock + Custom Data
+        Intelligence Platform<br>
+        OSINT Analysis Engine
     </div>
     """, unsafe_allow_html=True)
 
@@ -1010,8 +1010,7 @@ st.markdown("""
 <div style="text-align:center; color:#374151; font-size:0.75rem; padding:1rem 0 2rem; line-height:1.6;">
     <b style="color:#6366f1;">D-TRACK v2.0</b> &nbsp;|&nbsp;
     Cross-Platform OSINT Intelligence &nbsp;|&nbsp;
-    Synthetic Data Only &nbsp;|&nbsp;
-    Academic / Hackathon Use<br>
+    Semantic NLP &bull; Graph Analytics &bull; Wallet Forensics<br>
     <span style="color:#1e293b;">▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</span>
 </div>
 """, unsafe_allow_html=True)

@@ -9,7 +9,7 @@ import {
 import {
   AlertTriangle, Bot, Clock, Network, Shield, User,
   Link as LinkIcon, Wallet, ChevronRight, Eye, Fingerprint,
-  ArrowRight, Zap, Globe, MessageSquare, TrendingUp,
+  ArrowRight, Zap, Globe, MessageSquare, TrendingUp, FileText,
 } from "lucide-react";
 
 /* ── Helpers ───────────────────────────────────── */
@@ -700,6 +700,100 @@ export default function IdentityDive() {
                 </p>
                 <p className="text-[10px] uppercase tracking-wider mt-1" style={{ color: 'hsl(215 20% 40%)' }}>Risk Score</p>
                 <div className="mt-2"><RiskBadge level={identity.risk_level || "Low"} /></div>
+                <button
+                  onClick={() => {
+                    const w = window.open('', '_blank', 'width=900,height=700');
+                    if (!w) return;
+                    const profiles = identity.profiles || [];
+                    const allPosts = profiles.flatMap((p: any) => (p.post_analyses || []).map((post: any) => ({ ...post, username: p.username, platform: p.platform })));
+                    const flaggedPosts = allPosts.filter((p: any) => p.flagged);
+                    w.document.write(`<!DOCTYPE html><html><head><title>D-TRACK Case Report — ${identity.identity_id}</title>
+                    <style>
+                      body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 40px 20px; color: #1e293b; line-height: 1.6; }
+                      h1 { color: #6366f1; border-bottom: 3px solid #6366f1; padding-bottom: 8px; }
+                      h2 { color: #334155; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; margin-top: 32px; }
+                      .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 700; }
+                      .risk-critical { background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; }
+                      .risk-high { background: #fff7ed; color: #ea580c; border: 1px solid #fdba74; }
+                      .risk-medium { background: #fefce8; color: #ca8a04; border: 1px solid #fde047; }
+                      .risk-low { background: #f0fdf4; color: #16a34a; border: 1px solid #86efac; }
+                      table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+                      th, td { padding: 8px 12px; border: 1px solid #e2e8f0; text-align: left; font-size: 13px; }
+                      th { background: #f8fafc; font-weight: 600; }
+                      .post-card { padding: 10px; margin: 8px 0; border-radius: 8px; border-left: 3px solid; font-size: 13px; }
+                      .flagged { background: #fef2f2; border-left-color: #ef4444; }
+                      .clean { background: #f8fafc; border-left-color: #22c55e; }
+                      .mono { font-family: 'Consolas', monospace; font-size: 12px; }
+                      .score { font-size: 48px; font-weight: 900; color: ${riskColor(identity.risk_score || 0)}; }
+                      .header-grid { display: flex; justify-content: space-between; align-items: center; }
+                      .meta { color: #64748b; font-size: 12px; }
+                      @media print { body { padding: 20px; } }
+                    </style></head><body>
+                    <div class="header-grid">
+                      <div>
+                        <h1>🔍 D-TRACK Case Report</h1>
+                        <p class="meta">Identity: <span class="mono">${identity.identity_id}</span></p>
+                        <p class="meta">Generated: ${new Date().toLocaleString()}</p>
+                      </div>
+                      <div style="text-align:right">
+                        <div class="score">${Math.round(identity.risk_score || 0)}</div>
+                        <span class="badge risk-${(identity.risk_level || 'low').toLowerCase()}">${identity.risk_level || 'Low'} Risk</span>
+                      </div>
+                    </div>
+
+                    <h2>📋 Identity Summary</h2>
+                    <table>
+                      <tr><th>Linked Usernames</th><td>${(identity.usernames || identity.all_usernames || []).join(', ') || 'N/A'}</td></tr>
+                      <tr><th>Platforms</th><td>${(identity.platforms || []).join(', ')}</td></tr>
+                      <tr><th>Crypto Wallets</th><td class="mono">${(identity.all_wallets || identity.wallets || []).join('<br>') || 'None'}</td></tr>
+                      <tr><th>Total Profiles</th><td>${profiles.length}</td></tr>
+                      <tr><th>Total Flagged Posts</th><td style="color:#dc2626;font-weight:700">${flaggedPosts.length} / ${allPosts.length}</td></tr>
+                    </table>
+
+                    <h2>👤 Linked Profiles</h2>
+                    ${profiles.map((p: any) => `
+                      <table>
+                        <tr><th>Username</th><td><strong>${p.username}</strong></td><th>Platform</th><td>${p.platform}</td></tr>
+                        <tr><th>Display Name</th><td>${p.display_name || 'N/A'}</td><th>Followers</th><td>${(p.followers || 0).toLocaleString()}</td></tr>
+                        <tr><th>Max Intent Score</th><td style="color:${(p.max_intent_score || 0) >= 0.5 ? '#dc2626' : '#16a34a'};font-weight:700">${((p.max_intent_score || 0) * 100).toFixed(0)}%</td><th>Flagged Posts</th><td>${p.flagged_posts || 0}/${p.total_posts || 0}</td></tr>
+                        ${p.bio ? `<tr><th>Bio</th><td colspan="3">${p.bio}</td></tr>` : ''}
+                        ${(p.wallet_addresses || []).length > 0 ? `<tr><th>Wallets</th><td colspan="3" class="mono">${p.wallet_addresses.join(', ')}</td></tr>` : ''}
+                      </table>
+                    `).join('')}
+
+                    <h2>🔗 Evidence Chain — Why These Profiles Are Linked</h2>
+                    ${(identity.link_evidence || []).length > 0 ? `<table>
+                      <tr><th>Type</th><th>Detail</th></tr>
+                      ${(identity.link_evidence || []).map((e: any) => `<tr><td>${e.type || e.link_type || 'Link'}</td><td>${e.detail || e.description || JSON.stringify(e)}</td></tr>`).join('')}
+                    </table>` : '<p class="meta">Link evidence derived from shared wallet addresses and phone numbers across profiles.</p>'}
+
+                    <h2>🚨 Flagged Posts (${flaggedPosts.length})</h2>
+                    ${flaggedPosts.map((p: any) => `
+                      <div class="post-card flagged">
+                        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+                          <span class="mono">${p.username} (${p.platform}) — ${p.post_id}</span>
+                          <strong style="color:#dc2626">${((p.intent_score || 0) * 100).toFixed(0)}% intent</strong>
+                        </div>
+                        <div>${p.text || ''}</div>
+                        ${p.matched_anchor ? `<div class="meta" style="margin-top:6px">Matched anchor: "${p.matched_anchor}" (similarity: ${(p.anchor_similarity || 0).toFixed(4)})</div>` : ''}
+                      </div>
+                    `).join('')}
+
+                    <hr style="margin:32px 0;border-color:#e2e8f0">
+                    <p class="meta" style="text-align:center">D-TRACK v2.0 — Cross-Platform OSINT Intelligence Platform<br>This report is auto-generated for intelligence review purposes.</p>
+                    </body></html>`);
+                    w.document.close();
+                    setTimeout(() => w.print(), 500);
+                  }}
+                  className="mt-3 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all hover:scale-105 w-full"
+                  style={{
+                    background: 'hsla(262,83%,58%,0.1)',
+                    color: '#a78bfa',
+                    border: '1px solid hsla(262,83%,58%,0.2)',
+                  }}>
+                  <FileText className="w-3 h-3" />
+                  Generate Case Report
+                </button>
               </div>
             </div>
           </div>

@@ -1,9 +1,9 @@
 {
-  "name": "rest-express",
-  "version": "1.0.0",
+  "name": "d-track-client",
+  "version": "2.0.0",
   "type": "module",
   "license": "MIT",
-  "homepage": "https://themewagon.github.io/material-shadcn",
+  "description": "D-TRACK: Cross-Platform OSINT Intelligence Platform for De-Anonymizing Drug Trafficking Networks",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
